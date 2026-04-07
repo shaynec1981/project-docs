@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>[PROJECT NAME] — Documentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0e1116;--surf:#161c27;--surf2:#1c2535;
+    --bdr:#2a3347;--tx:#d4dce8;--txm:#7a8ba3;--txd:#3f5068;
+    --gr:#7dd6b5;--gr-d:rgba(125,214,181,.10);
+    --bl:#5a9fde;--bl-d:rgba(90,159,222,.10);
+    --am:#e8935a;--am-d:rgba(232,147,90,.09);
+    --hd:#edf2f7;
+    --fh:'Syne',sans-serif;--fb:'DM Sans',sans-serif;--fm:'JetBrains Mono',monospace;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--fb);background:var(--bg);color:var(--tx);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3rem 1.5rem;}
+
+  .wrap{width:100%;max-width:640px;}
+
+  .hero{text-align:center;margin-bottom:3rem;}
+  .hero-tag{font-family:var(--fm);font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--gr);display:block;margin-bottom:.6rem;}
+  .hero h1{font-family:var(--fh);font-size:2.2rem;font-weight:800;color:var(--hd);letter-spacing:-.03em;line-height:1.1;margin-bottom:.5rem;}
+  .hero p{color:var(--txm);font-size:14.5px;}
+
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-bottom:2rem;}
+
+  .card{background:var(--surf);border:1px solid var(--bdr);border-radius:12px;padding:1.5rem 1.4rem;text-decoration:none;display:flex;flex-direction:column;gap:.5rem;transition:border-color .15s,background .15s;position:relative;overflow:hidden;}
+  .card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .15s;}
+  .card:hover{border-color:var(--gr);background:rgba(125,214,181,.04);}
+  .card:hover .card-arr{opacity:1;transform:translateX(0);}
+
+  .card-badge{font-family:var(--fm);font-size:9.5px;padding:2px 8px;border-radius:3px;border:1px solid;display:inline-block;margin-bottom:.3rem;width:fit-content;}
+  .b-gr{background:var(--gr-d);color:var(--gr);border-color:rgba(125,214,181,.22);}
+  .b-bl{background:var(--bl-d);color:var(--bl);border-color:rgba(90,159,222,.22);}
+
+  .card-title{font-family:var(--fh);font-size:1rem;font-weight:700;color:var(--hd);line-height:1.2;}
+  .card-desc{font-size:13px;color:var(--txm);line-height:1.55;flex:1;}
+  .card-who{font-family:var(--fm);font-size:10.5px;color:var(--txd);margin-top:.3rem;}
+  .card-arr{font-size:16px;color:var(--gr);opacity:0;transform:translateX(-4px);transition:opacity .15s,transform .15s;margin-top:.4rem;display:block;}
+
+  .footer{text-align:center;font-family:var(--fm);font-size:10.5px;color:var(--txd);}
+  .footer a{color:var(--txd);text-decoration:none;}
+  .footer a:hover{color:var(--txm);}
+
+  @media(max-width:500px){.cards{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <span class="hero-tag">[STUDIO NAME] · Godot 4.6</span>
+    <h1>[PROJECT NAME]</h1>
+    <p>Contributor Documentation</p>
+  </div>
+
+  <div class="cards">
+
+    <a class="card" href="[ProjectName]_Contributor_Docs.html">
+      <span class="card-badge b-gr">CODE</span>
+      <div class="card-title">Code Team Documentation</div>
+      <div class="card-desc">Standards, architecture, API references, and GitHub workflow for programmers.</div>
+      <div class="card-who">Lead: Drykul · #programming</div>
+      <span class="card-arr">→</span>
+    </a>
+
+    <a class="card" href="[ProjectName]_Contributor_Guide_NonCoder.html">
+      <span class="card-badge b-bl">ALL TEAMS</span>
+      <div class="card-title">Contributor Guide</div>
+      <div class="card-desc">Repo setup, branch workflow, file rules, and department standards for non-coders.</div>
+      <div class="card-who">Lead: Form · All departments</div>
+      <span class="card-arr">→</span>
+    </a>
+
+  </div>
+
+  <div class="footer">
+    <a href="https://github.com/shaynec1981/project-docs" target="_blank">github.com/shaynec1981/project-docs</a>
+    &nbsp;·&nbsp; v0.1.0-draft
+  </div>
+
+</div>
+</body>
+</html>
