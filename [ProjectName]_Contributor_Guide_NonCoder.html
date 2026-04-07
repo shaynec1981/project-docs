@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>[PROJECT NAME] — Contributor Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e1116;--surf:#161c27;--surf2:#1c2535;--code:#090d14;
+  --bdr:#2a3347;--bdr-l:#1e2a3a;--tx:#d4dce8;--txm:#7a8ba3;--txd:#3f5068;
+  --gr:#7dd6b5;--gr-d:rgba(125,214,181,.10);
+  --bl:#5a9fde;--bl-d:rgba(90,159,222,.10);
+  --am:#e8935a;--am-d:rgba(232,147,90,.09);
+  --rd:#e85d75;--rd-d:rgba(232,93,117,.08);
+  --hd:#edf2f7;
+  --fh:'Syne',sans-serif;--fb:'DM Sans',sans-serif;--fm:'JetBrains Mono',monospace;
+  --sw:240px;--r:6px;--rl:10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--fb);background:var(--bg);color:var(--tx);font-size:14.5px;line-height:1.7;display:flex;min-height:100vh;}
+
+/* sidebar */
+.sb{width:var(--sw);min-width:var(--sw);height:100vh;position:sticky;top:0;overflow-y:auto;background:var(--surf);border-right:1px solid var(--bdr);display:flex;flex-direction:column;}
+.sb::-webkit-scrollbar{width:3px;}.sb::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:2px;}
+.sb-brand{padding:1.3rem 1.1rem .9rem;border-bottom:1px solid var(--bdr);position:sticky;top:0;background:var(--surf);z-index:2;}
+.sb-tag{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.14em;color:var(--gr);display:block;margin-bottom:.25rem;}
+.sb-title{font-family:var(--fh);font-size:13px;font-weight:700;color:var(--hd);line-height:1.25;}
+.sb-badge{display:inline-flex;align-items:center;gap:4px;margin-top:.5rem;font-family:var(--fm);font-size:9.5px;background:var(--gr-d);color:var(--gr);border:1px solid rgba(125,214,181,.22);padding:2px 7px;border-radius:3px;}
+.sb-badge::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--am);flex-shrink:0;}
+.toc{padding:.5rem 0 1.5rem;flex:1;}
+.toc-lbl{font-family:var(--fm);font-size:8.5px;text-transform:uppercase;letter-spacing:.13em;color:var(--txd);padding:1rem 1.1rem .25rem;display:block;}
+.toc a{display:flex;align-items:center;gap:.45rem;padding:.32rem 1.1rem;font-size:12px;font-weight:500;color:var(--txm);text-decoration:none;border-left:2px solid transparent;transition:color .12s,background .12s,border-color .12s;}
+.toc a:hover,.toc a.on{color:var(--hd);background:var(--gr-d);border-left-color:var(--gr);}
+.toc a.on{color:var(--gr);}
+.toc-n{font-family:var(--fm);font-size:9.5px;color:var(--txd);min-width:18px;}
+
+/* main */
+.main{flex:1;min-width:0;padding:3rem 4rem 7rem;max-width:820px;}
+.hero{padding-bottom:2rem;margin-bottom:3rem;border-bottom:1px solid var(--bdr);}
+.hero-tag{font-family:var(--fm);font-size:10.5px;color:var(--gr);letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:.7rem;}
+.hero h1{font-family:var(--fh);font-size:2.4rem;font-weight:800;color:var(--hd);letter-spacing:-.035em;line-height:1.08;margin-bottom:.5rem;}
+.hero-sub{color:var(--txm);font-size:15px;margin-bottom:1.2rem;}
+.meta{display:flex;flex-wrap:wrap;gap:1.5rem;}
+.mi{font-family:var(--fm);font-size:10.5px;color:var(--txd);}
+.mi b{color:var(--txm);font-weight:400;}
+
+.sec{margin-bottom:3.5rem;scroll-margin-top:2rem;}
+.sec-tag{font-family:var(--fm);font-size:9.5px;text-transform:uppercase;letter-spacing:.13em;color:var(--gr);display:block;margin-bottom:.4rem;}
+h2{font-family:var(--fh);font-size:1.55rem;font-weight:700;color:var(--hd);letter-spacing:-.022em;margin-bottom:1.1rem;line-height:1.15;}
+h3{font-family:var(--fh);font-size:1rem;font-weight:600;color:var(--hd);margin:1.8rem 0 .6rem;letter-spacing:-.01em;}
+p{margin-bottom:.85rem;}p:last-child{margin-bottom:0;}
+a{color:var(--gr);text-decoration:none;}a:hover{text-decoration:underline;}
+ul,ol{margin:.4rem 0 .85rem 1.35rem;}li{margin-bottom:.28rem;}
+strong{color:var(--hd);font-weight:600;}
+code{font-family:var(--fm);font-size:12.5px;background:var(--code);border:1px solid var(--bdr-l);color:var(--gr);padding:1px 5px;border-radius:3px;}
+
+/* callout */
+.cal{border-radius:var(--rl);padding:.9rem 1.1rem;margin:1.1rem 0;border-left:3px solid;}
+.cal p{margin-bottom:0;font-size:13.5px;}
+.cal-t{font-family:var(--fm);font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:.35rem;font-weight:600;}
+.ci{background:var(--bl-d);border-color:var(--bl);}.ci .cal-t{color:var(--bl);}
+.cw{background:var(--am-d);border-color:var(--am);}.cw .cal-t{color:var(--am);}
+.cd{background:var(--rd-d);border-color:var(--rd);}.cd .cal-t{color:var(--rd);}
+.cg{background:var(--gr-d);border-color:var(--gr);}.cg .cal-t{color:var(--gr);}
+
+/* tables */
+table{width:100%;border-collapse:collapse;margin:.85rem 0 1.3rem;font-size:13.5px;}
+thead th{background:var(--surf2);color:var(--txm);font-family:var(--fm);font-size:9.5px;text-transform:uppercase;letter-spacing:.09em;padding:.5rem .9rem;text-align:left;border-bottom:1px solid var(--bdr);}
+td{padding:.55rem .9rem;border-bottom:1px solid var(--bdr-l);vertical-align:top;}
+tr:last-child td{border-bottom:none;}
+.mn{font-family:var(--fm);font-size:12px;}.ok{color:var(--gr);}.bad{color:var(--rd);}
+.strike{text-decoration:line-through;color:var(--txd);}
+
+/* leads */
+.leads{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin:.9rem 0 1.4rem;}
+.lc{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--rl);padding:.8rem .95rem;}
+.lc-name{font-family:var(--fh);font-size:13px;font-weight:700;color:var(--hd);margin-bottom:.12rem;}
+.lc-role{font-size:12px;color:var(--txm);}
+.lc-code{display:inline-block;margin-top:.35rem;font-family:var(--fm);font-size:9.5px;background:var(--gr-d);color:var(--gr);border:1px solid rgba(125,214,181,.2);padding:1px 6px;border-radius:3px;}
+.lc-code.bl{background:var(--bl-d);color:var(--bl);border-color:rgba(90,159,222,.22);}
+.lc-code.am{background:var(--am-d);color:var(--am);border-color:rgba(232,147,90,.22);}
+.lc-code.rd{background:var(--rd-d);color:var(--rd);border-color:rgba(232,93,117,.22);}
+
+/* branch pill */
+.bpill{display:inline-flex;align-items:center;font-family:var(--fm);font-size:13.5px;background:var(--code);border:1px solid var(--bdr);border-radius:var(--r);padding:.65rem 1.2rem;margin:.7rem 0 .9rem;}
+.bp-sep{color:var(--txd);}.bp-f{color:var(--bl);}.bp-t{color:var(--gr);}.bp-d{color:var(--txm);}
+
+/* workflow steps */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin:1rem 0 1.3rem;}
+.step{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--rl);padding:.85rem 1rem;}
+.step-n{font-family:var(--fm);font-size:10px;color:var(--txd);margin-bottom:.2rem;}
+.step-t{font-family:var(--fh);font-size:13px;font-weight:600;color:var(--hd);margin-bottom:.2rem;}
+.step-d{font-size:12px;color:var(--txm);line-height:1.5;}
+
+/* folder tree */
+.tree{font-family:var(--fm);font-size:12px;background:var(--code);border:1px solid var(--bdr);border-radius:var(--rl);padding:1.2rem 1.4rem;overflow-x:auto;line-height:1.9;white-space:pre;}
+.tf{color:var(--bl);}.tc{color:var(--txd);}.tr{color:var(--rd);}
+
+/* dept sections */
+.dept{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--rl);padding:1.2rem 1.4rem;margin:1.1rem 0;}
+.dept-hd{display:flex;align-items:center;gap:.7rem;margin-bottom:.8rem;}
+.dept-name{font-family:var(--fh);font-size:14px;font-weight:700;color:var(--hd);}
+.badge{font-family:var(--fm);font-size:9.5px;padding:2px 8px;border-radius:3px;border:1px solid;}
+.b-gr{background:var(--gr-d);color:var(--gr);border-color:rgba(125,214,181,.22);}
+.b-bl{background:var(--bl-d);color:var(--bl);border-color:rgba(90,159,222,.22);}
+.b-am{background:var(--am-d);color:var(--am);border-color:rgba(232,147,90,.22);}
+.b-rd{background:var(--rd-d);color:var(--rd);border-color:rgba(232,93,117,.22);}
+.dept p{font-size:13.5px;color:var(--txm);margin-bottom:.5rem;}
+.dept p:last-child{margin-bottom:0;}
+
+/* naming table compact */
+.nt{width:100%;border-collapse:collapse;margin:.6rem 0;font-size:12.5px;}
+.nt thead th{background:var(--surf2);color:var(--txm);font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;padding:.4rem .8rem;text-align:left;border-bottom:1px solid var(--bdr);}
+.nt td{padding:.42rem .8rem;border-bottom:1px solid var(--bdr-l);vertical-align:middle;}
+.nt tr:last-child td{border-bottom:none;}
+.nt .pre{font-family:var(--fm);color:var(--gr);}.nt .pat{font-family:var(--fm);color:var(--txm);font-size:11.5px;}.nt .ex{font-family:var(--fm);color:var(--txd);font-size:11.5px;}
+
+/* off-limits */
+.offl{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin:.9rem 0;}
+.ofc{background:rgba(232,93,117,.05);border:1px solid rgba(232,93,117,.2);border-radius:var(--r);padding:.7rem .9rem;}
+.ofc-path{font-family:var(--fm);font-size:12px;color:var(--rd);margin-bottom:.15rem;}
+.ofc-why{font-size:12px;color:var(--txm);}
+
+@media(max-width:820px){.sb{display:none;}.main{padding:2rem 1.5rem 4rem;max-width:100%;}.leads{grid-template-columns:1fr 1fr;}.steps{grid-template-columns:1fr 1fr;}.offl{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sb">
+  <div class="sb-brand">
+    <span class="sb-tag">All Teams · Godot 4.6</span>
+    <div class="sb-title">[PROJECT NAME]<br>Contributor Guide</div>
+    <span class="sb-badge">v0.1.0-draft</span>
+  </div>
+  <div class="toc">
+    <span class="toc-lbl">Contents</span>
+    <a href="#leads" class="on"><span class="toc-n">01</span> Team Leads</a>
+    <a href="#setup"><span class="toc-n">02</span> Setup</a>
+    <a href="#workflow"><span class="toc-n">03</span> Workflow</a>
+    <a href="#branches"><span class="toc-n">04</span> Branches</a>
+    <a href="#repo"><span class="toc-n">05</span> Repo Rules</a>
+    <a href="#folders"><span class="toc-n">06</span> Where Things Live</a>
+    <a href="#depts"><span class="toc-n">07</span> Dept. Standards</a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="hero">
+    <span class="hero-tag">[STUDIO NAME] · All Teams · Godot 4.6</span>
+    <h1>[PROJECT NAME]</h1>
+    <p class="hero-sub">Repository Contributor Guide</p>
+    <div class="meta">
+      <span class="mi">Version &nbsp;<b>0.1.0-draft</b></span>
+      <span class="mi">Engine &nbsp;<b>Godot 4.6</b></span>
+    </div>
+  </div>
+  <p style="color:var(--txm);margin-bottom:2.5rem;">This guide covers the universal rules for working in this repository — getting set up, branching, and submitting work. Sections 01–06 apply to everyone. Section 07 contains each department's own standards, owned by their respective lead. If you have questions, reach out in your team's Discord channel or directly to your lead.</p>
+
+  <!-- 01 LEADS -->
+  <section class="sec" id="leads">
+    <span class="sec-tag">Section 01</span>
+    <h2>Team Leads</h2>
+    <p style="color:var(--txm);">Your lead owns the standards for your department and is your first point of contact for anything team-specific.</p>
+    <div class="leads">
+      <div class="lc"><div class="lc-name">Form</div><div class="lc-role">Project Lead</div></div>
+      <div class="lc"><div class="lc-name">Drykul</div><div class="lc-role">Programming Lead</div><span class="lc-code">CODE</span></div>
+      <div class="lc"><div class="lc-name">LudicrousBiscuit</div><div class="lc-role">Art Lead</div><span class="lc-code bl">ART</span></div>
+      <div class="lc"><div class="lc-name">Baa</div><div class="lc-role">Sound Lead</div><span class="lc-code am">SOUND</span></div>
+      <div class="lc"><div class="lc-name">Crayon</div><div class="lc-role">Narrative Lead</div><span class="lc-code rd">NARR</span></div>
+      <div class="lc"><div class="lc-name" style="color:var(--txd);">TBD</div><div class="lc-role">Level Design Lead</div><span class="lc-code am">LEVDEV</span></div>
+    </div>
+  </section>
+
+  <!-- 02 SETUP -->
+  <section class="sec" id="setup">
+    <span class="sec-tag">Section 02</span>
+    <h2>Setup</h2>
+    <table>
+      <thead><tr><th>Tool</th><th>Required?</th><th>Where to get it</th></tr></thead>
+      <tbody>
+        <tr><td><strong>GitHub Desktop</strong></td><td class="ok">Everyone</td><td><a href="https://desktop.github.com" target="_blank">desktop.github.com</a></td></tr>
+        <tr><td><strong>GitHub account</strong></td><td class="ok">Everyone</td><td><a href="https://github.com" target="_blank">github.com</a> — free account</td></tr>
+        <tr><td><strong>Godot 4.6</strong></td><td style="color:var(--txm);">If placing/testing assets</td><td><a href="https://godotengine.org" target="_blank">godotengine.org</a> — standard build only</td></tr>
+      </tbody>
+    </table>
+    <p style="color:var(--txm);">Once you have your tools, introduce yourself in your team's Discord channel. <strong>Form</strong> (Project Lead) is the only person who can grant repository access — reach out to them directly. After you're added, open GitHub Desktop → <strong>File → Clone Repository</strong> → find [PROJECT NAME] → Clone.</p>
+  </section>
+
+  <!-- 03 WORKFLOW -->
+  <section class="sec" id="workflow">
+    <span class="sec-tag">Section 03</span>
+    <h2>Workflow</h2>
+    <div class="steps">
+      <div class="step"><div class="step-n">Step 1</div><div class="step-t">Create a branch</div><div class="step-d">Branch → New Branch. See Section 04 for naming.</div></div>
+      <div class="step"><div class="step-n">Step 2</div><div class="step-t">Add your files</div><div class="step-d">Place files in the correct folder. See Section 06.</div></div>
+      <div class="step"><div class="step-n">Step 3</div><div class="step-t">Commit</div><div class="step-d">Write a short description of what you added. Click Commit.</div></div>
+      <div class="step"><div class="step-n">Step 4</div><div class="step-t">Push</div><div class="step-d">Click <strong>Push origin</strong> to upload your branch.</div></div>
+      <div class="step"><div class="step-n">Step 5</div><div class="step-t">Open PR</div><div class="step-d">Branch → Create Pull Request. Write a brief summary.</div></div>
+      <div class="step"><div class="step-n">Step 6</div><div class="step-t">Notify your lead</div><div class="step-d">Message them on Discord — don't rely on GitHub notifications.</div></div>
+    </div>
+    <div class="cal cd"><span class="cal-t">Never work directly on a department branch</span><p>Always create your own feature branch. Never push directly to <code>art</code>, <code>sound</code>, <code>levdev</code>, <code>code</code>, <code>dev</code>, or any other shared branch.</p></div>
+  </section>
+
+  <!-- 04 BRANCHES -->
+  <section class="sec" id="branches">
+    <span class="sec-tag">Section 04</span>
+    <h2>Branches</h2>
+    <div class="bpill"><span class="bp-f">Feature</span><span class="bp-sep">-</span><span class="bp-t">TEAMCODE</span><span class="bp-sep">-</span><span class="bp-d">short-description</span></div>
+    <table>
+      <thead><tr><th>Team</th><th>Code</th><th>Example branch</th></tr></thead>
+      <tbody>
+        <tr><td>Art</td><td class="mn ok">ART</td><td class="mn">Feature-ART-lake-fish-sprites</td></tr>
+        <tr><td>Sound</td><td class="mn ok">SOUND</td><td class="mn">Feature-SOUND-forest-ambient-loop</td></tr>
+        <tr><td>Level Design</td><td class="mn ok">LEVDEV</td><td class="mn">Feature-LEVDEV-cave-layout</td></tr>
+        <tr><td>Narrative</td><td class="mn ok">NARR</td><td class="mn">Feature-NARR-intro-dialogue</td></tr>
+        <tr><td>Programming</td><td class="mn ok">CODE</td><td class="mn">Feature-CODE-bauble-component</td></tr>
+      </tbody>
+    </table>
+    <p style="color:var(--txm);font-size:13px;">Description: all lowercase, hyphens only — no spaces. Keep it short and descriptive. In GitHub Desktop: make sure you are on your department branch first, then <strong>Branch → New Branch</strong>.</p>
+  </section>
+
+  <!-- 05 REPO RULES -->
+  <section class="sec" id="repo">
+    <span class="sec-tag">Section 05</span>
+    <h2>Repo Rules</h2>
+    <p style="color:var(--txm);">These rules apply to everyone regardless of department.</p>
+
+    <h3>No spaces in file or folder names</h3>
+    <table>
+      <thead><tr><th>Valid</th><th>Invalid</th></tr></thead>
+      <tbody>
+        <tr><td class="mn ok">forest_ambient_loop.wav</td><td class="mn strike">forest ambient loop.wav</td></tr>
+        <tr><td class="mn ok">lake-fish-idle.png</td><td class="mn strike">Lake Fish Idle.png</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Don't touch .import files</h3>
+    <p style="color:var(--txm);">Godot auto-generates a <code>.import</code> file alongside every asset. Never edit or delete them — just commit them as-is when they appear.</p>
+
+    <h3>Commit messages</h3>
+    <p style="color:var(--txm);">Write what you actually did. <span class="ok">"Add idle sprites for jellyfish NPC"</span> ✓ &nbsp;&nbsp; <span class="bad">"stuff"</span> ✗ &nbsp;&nbsp; <span class="bad">"update"</span> ✗</p>
+  </section>
+
+  <!-- 06 WHERE THINGS LIVE -->
+  <section class="sec" id="folders">
+    <span class="sec-tag">Section 06</span>
+    <h2>Where Things Live</h2>
+    <p style="color:var(--txm);font-size:13px;margin-bottom:.9rem;">This is a simplified view of the repository. The full structure has more depth — if you're unsure where something belongs, ask in your Discord channel or check with your lead before placing it.</p>
+    <div class="tree"><span class="tf">res://</span>
+├── <span class="tf">assets/</span>
+│   ├── <span class="tf">art/</span>
+│   │   ├── <span class="tf">characters/</span>      <span class="tc"># Character sprites &amp; portraits</span>
+│   │   ├── <span class="tf">creatures/</span>       <span class="tc"># Animals and creature art</span>
+│   │   ├── <span class="tf">environment/</span>     <span class="tc"># Tiles, terrain, backgrounds</span>
+│   │   ├── <span class="tf">items/</span>           <span class="tc"># Item icons and sprites</span>
+│   │   ├── <span class="tf">placeholder/</span>     <span class="tc"># Temporary stand-ins — must be replaced before ship</span>
+│   │   ├── <span class="tf">props/</span>           <span class="tc"># Environmental props</span>
+│   │   └── <span class="tf">ui/</span>              <span class="tc"># UI textures, buttons, icons</span>
+│   └── <span class="tf">audio/</span>
+│       ├── <span class="tf">music/</span>           <span class="tc"># Background music</span>
+│       └── <span class="tf">sfx/</span>             <span class="tc"># Sound effects</span>
+├── <span class="tf">data/</span>                   <span class="tc"># Item &amp; config resources — ask before adding here</span>
+└── <span class="tf">scenes/</span>
+    ├── <span class="tf">characters/</span>         <span class="tc"># Character scenes</span>
+    ├── <span class="tf">creatures/</span>          <span class="tc"># Creature scenes</span>
+    ├── <span class="tf">environment/</span>        <span class="tc"># Level &amp; world scenes</span>
+    └── <span class="tf">prefabs/</span>            <span class="tc"># Reusable building block scenes</span></div>
+
+    <h3>Off-limits — do not modify without permission</h3>
+    <div class="offl">
+      <div class="ofc"><div class="ofc-path">scripts/</div><div class="ofc-why">Code only — contact Drykul</div></div>
+      <div class="ofc"><div class="ofc-path">addons/</div><div class="ofc-why">Auto-managed plugins — never touch</div></div>
+      <div class="ofc"><div class="ofc-path">assets/art/item_shape_previews/</div><div class="ofc-why">Inventory extension only — contact Drykul</div></div>
+      <div class="ofc"><div class="ofc-path">project.godot</div><div class="ofc-why">Core config — contact Drykul</div></div>
+      <div class="ofc"><div class="ofc-path">.godot/</div><div class="ofc-why">Editor cache — auto-generated, never edit</div></div>
+    </div>
+    <div class="cal cw"><span class="cal-t">Accidentally changed something?</span><p>Don't commit it. In GitHub Desktop, right-click the file → <strong>Discard Changes</strong>. If already committed, contact Drykul on Discord immediately before pushing.</p></div>
+  </section>
+
+  <!-- 07 DEPT STANDARDS -->
+  <section class="sec" id="depts">
+    <span class="sec-tag">Section 07</span>
+    <h2>Department Standards</h2>
+    <p style="color:var(--txm);">Each department's standards are owned and maintained by their lead. Reach out to your lead or department Discord channel for questions.</p>
+
+    <!-- ART -->
+    <div class="dept">
+      <div class="dept-hd">
+        <span class="dept-name">Art</span>
+        <span class="badge b-bl">ART</span>
+        <span style="font-size:12px;color:var(--txm);">Lead: LudicrousBiscuit · #art-board</span>
+      </div>
+
+      <p><strong style="color:var(--hd);">Naming — general rules:</strong> <code>snake_case</code> · versions use two digits (<code>01</code>, <code>02</code>) · names must be descriptive</p>
+
+      <table class="nt">
+        <thead><tr><th>Asset type</th><th>Prefix</th><th>Pattern</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>Frame-by-frame animation</td><td class="pre">fb_</td><td class="pat">fb_[name]_[animation]</td><td class="ex">fb_spookyjelly_idle</td></tr>
+          <tr><td>Atlas sheet</td><td class="pre">a_</td><td class="pat">a_[name]_[version]</td><td class="ex">a_slugfoliage_01</td></tr>
+          <tr><td>Texture</td><td class="pre">t_</td><td class="pat">t_[category]_[type]_[version]</td><td class="ex">t_noise_perlin_05</td></tr>
+          <tr><td>Mesh (3D model)</td><td class="pre">sm_</td><td class="pat">sm_[category]_[type]_[version]</td><td class="ex">sm_kitbash_deadtree_01</td></tr>
+          <tr><td>Shader</td><td class="pre">s_</td><td class="pat">s_[shadername]_[version]</td><td class="ex">s_oceanwave_01</td></tr>
+          <tr><td>Visual shader</td><td class="pre">vs_</td><td class="pat">vs_[shadername]_[version]</td><td class="ex">vs_postpoutline_04</td></tr>
+          <tr><td>Material</td><td class="pre">m_</td><td class="pat">m_[category]_[name]_[version]</td><td class="ex">m_pbr_jellytree_13</td></tr>
+        </tbody>
+      </table>
+
+      <p><strong style="color:var(--hd);">Workflow:</strong> Mechanics built by programmers → Prototype art → Testing → Adjust <em>(repeat)</em> → Polished art</p>
+      <p style="font-size:13px;">Prototype art = kitbash assets or napkin sketches/stick figures. These are expected at early stages — they are not final.</p>
+
+      <p style="margin-top:.8rem;"><strong style="color:var(--hd);">Submission:</strong></p>
+      <ul style="font-size:13.5px;color:var(--txm);">
+        <li>For review or discussion of an asset → post in <strong>#artwork</strong> tagged appropriately</li>
+        <li>For submissions → create a folder with your name in the <strong>Artwork Assets Drive</strong> on the shared Google Drive and post your work there</li>
+      </ul>
+    </div>
+
+    <!-- SOUND -->
+    <div class="dept">
+      <div class="dept-hd">
+        <span class="dept-name">Sound</span>
+        <span class="badge b-am">SOUND</span>
+        <span style="font-size:12px;color:var(--txm);">Lead: Baa</span>
+      </div>
+      <p>Standards not yet published. Contact <strong>Baa</strong> directly or ask in your sound Discord channel for current guidance.</p>
+    </div>
+
+    <!-- LEVDEV -->
+    <div class="dept">
+      <div class="dept-hd">
+        <span class="dept-name">Level Design</span>
+        <span class="badge b-am">LEVDEV</span>
+        <span style="font-size:12px;color:var(--txm);">Lead: TBD</span>
+      </div>
+      <p>Standards not yet published. Contact <strong>Form</strong> for current guidance until a lead is assigned.</p>
+    </div>
+
+    <!-- NARRATIVE -->
+    <div class="dept">
+      <div class="dept-hd">
+        <span class="dept-name">Narrative</span>
+        <span class="badge b-rd">NARR</span>
+        <span style="font-size:12px;color:var(--txm);">Lead: Crayon</span>
+      </div>
+      <p>Standards not yet published. Contact <strong>Crayon</strong> directly or ask in your narrative Discord channel for current guidance.</p>
+    </div>
+
+    <!-- CODE -->
+    <div class="dept">
+      <div class="dept-hd">
+        <span class="dept-name">Programming</span>
+        <span class="badge b-gr">CODE</span>
+        <span style="font-size:12px;color:var(--txm);">Lead: Drykul · #programming</span>
+      </div>
+      <p>See the <strong>[ProjectName]_Contributor_Docs</strong> — a separate document on the shared Google Drive. It covers all coding standards, architecture, API references, and the full contributor workflow for the CODE team.</p>
+    </div>
+
+  </section>
+
+</main>
+</body>
+</html>
