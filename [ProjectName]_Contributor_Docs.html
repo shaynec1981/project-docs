@@ -1,0 +1,1580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[PROJECT NAME] — Code Team Documentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;1,9..40,400&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:            #0e1116;
+      --bg-surface:    #161c27;
+      --bg-surface-2:  #1c2535;
+      --bg-code:       #090d14;
+      --border:        #2a3347;
+      --border-light:  #1e2a3a;
+      --text:          #d4dce8;
+      --text-muted:    #7a8ba3;
+      --text-dim:      #3f5068;
+      --accent:        #7dd6b5;
+      --accent-dim:    rgba(125,214,181,0.10);
+      --accent-2:      #5a9fde;
+      --accent-2-dim:  rgba(90,159,222,0.10);
+      --pending:       #e8935a;
+      --pending-dim:   rgba(232,147,90,0.09);
+      --danger:        #e85d75;
+      --danger-dim:    rgba(232,93,117,0.08);
+      --heading:       #edf2f7;
+      --sidebar-w:     276px;
+      --font-head:     'Syne', sans-serif;
+      --font-body:     'DM Sans', sans-serif;
+      --font-mono:     'JetBrains Mono', monospace;
+      --r:             6px;
+      --r-lg:          10px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.75;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: var(--sidebar-w);
+      min-width: var(--sidebar-w);
+      height: 100vh;
+      position: sticky;
+      top: 0;
+      overflow-y: auto;
+      background: var(--bg-surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar::-webkit-scrollbar { width: 3px; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+    .sidebar-brand {
+      padding: 1.4rem 1.2rem 1rem;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: var(--bg-surface);
+      z-index: 2;
+    }
+    .brand-tag {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+    .brand-title {
+      font-family: var(--font-head);
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--heading);
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+    }
+    .brand-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 0.55rem;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      background: var(--accent-dim);
+      color: var(--accent);
+      border: 1px solid rgba(125,214,181,0.22);
+      padding: 2px 8px;
+      border-radius: 3px;
+    }
+    .brand-badge::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--pending);
+      flex-shrink: 0;
+    }
+    .toc { padding: 0.75rem 0 2rem; flex: 1; }
+    .toc-group-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.13em;
+      color: var(--text-dim);
+      padding: 1.1rem 1.2rem 0.3rem;
+      display: block;
+    }
+    .toc-item { display: flex; align-items: center; }
+    .toc-item a {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      width: 100%;
+      padding: 0.38rem 1.2rem;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      transition: color 0.15s, background 0.15s, border-color 0.15s;
+    }
+    .toc-item a:hover { color: var(--heading); background: var(--accent-dim); border-left-color: var(--accent); }
+    .toc details { width: 100%; }
+    .toc details summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding: 0.38rem 1.2rem;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text-muted);
+      border-left: 2px solid transparent;
+      transition: color 0.15s, background 0.15s, border-color 0.15s;
+      gap: 0.55rem;
+      user-select: none;
+    }
+    .toc details summary::-webkit-details-marker { display: none; }
+    .toc details summary:hover { color: var(--heading); background: var(--accent-dim); border-left-color: var(--accent); }
+    .toc-toggle { margin-left: auto; font-size: 9px; color: var(--text-dim); transition: transform 0.18s; flex-shrink: 0; }
+    .toc details[open] .toc-toggle { transform: rotate(90deg); }
+    .toc-num { font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); min-width: 20px; flex-shrink: 0; }
+    .toc-sub { list-style: none; padding-bottom: 0.2rem; }
+    .toc-sub li a {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.26rem 1.2rem 0.26rem 2.35rem;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-dim);
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .toc-sub li a:hover { color: var(--accent); border-left-color: var(--accent); }
+    .pb {
+      font-family: var(--font-mono);
+      font-size: 8.5px;
+      background: var(--pending-dim);
+      color: var(--pending);
+      border: 1px solid rgba(232,147,90,0.25);
+      padding: 1px 5px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    /* ── MAIN ── */
+    .main { flex: 1; min-width: 0; padding: 3.5rem 4.5rem 8rem; max-width: 900px; }
+    .hero { padding-bottom: 2.5rem; margin-bottom: 3.5rem; border-bottom: 1px solid var(--border); }
+    .hero-tag { font-family: var(--font-mono); font-size: 11px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-bottom: 0.8rem; }
+    .hero h1 { font-family: var(--font-head); font-size: 2.6rem; font-weight: 800; color: var(--heading); letter-spacing: -0.035em; line-height: 1.08; margin-bottom: 0.6rem; }
+    .hero-sub { color: var(--text-muted); font-size: 16px; margin-bottom: 1.4rem; }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 1.75rem; }
+    .meta-item { font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); }
+    .meta-item b { color: var(--text-muted); font-weight: 400; }
+    .section { margin-bottom: 4.5rem; scroll-margin-top: 2rem; }
+    .section-tag { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.13em; color: var(--accent); display: block; margin-bottom: 0.45rem; }
+    h2 { font-family: var(--font-head); font-size: 1.7rem; font-weight: 700; color: var(--heading); letter-spacing: -0.025em; margin-bottom: 1.3rem; line-height: 1.15; }
+    .subsection { scroll-margin-top: 2rem; margin-bottom: 2.75rem; }
+    h3 { font-family: var(--font-head); font-size: 1.08rem; font-weight: 600; color: var(--heading); margin: 2.2rem 0 0.7rem; letter-spacing: -0.01em; }
+    h4 { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.09em; color: var(--text-muted); margin: 1.6rem 0 0.5rem; }
+    p { margin-bottom: 1rem; }
+    p:last-child { margin-bottom: 0; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    ul, ol { margin: 0.5rem 0 1rem 1.4rem; }
+    li { margin-bottom: 0.3rem; }
+    strong { color: var(--heading); font-weight: 600; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+    code {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      background: var(--bg-code);
+      border: 1px solid var(--border-light);
+      color: var(--accent);
+      padding: 1px 6px;
+      border-radius: 3px;
+    }
+    pre {
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 1.3rem 1.5rem;
+      overflow-x: auto;
+      margin: 1rem 0 1.5rem;
+      position: relative;
+      white-space: pre;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.85;
+      border-radius: 0;
+      white-space: pre;
+    }
+    .code-lang { position: absolute; top: 0.7rem; right: 1rem; font-family: var(--font-mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dim); }
+    .kw  { color: #9b7ee8; }
+    .fn  { color: #7dd6b5; }
+    .cm  { color: #3f5068; font-style: italic; }
+    .st  { color: #e8c97a; }
+    .ty  { color: #5a9fde; }
+    .no  { color: #e8935a; }
+    .an  { color: #e8935a; }
+    .callout { border-radius: var(--r-lg); padding: 1rem 1.2rem; margin: 1.3rem 0; border-left: 3px solid; }
+    .callout p { margin-bottom: 0; }
+    .callout-title { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.11em; display: block; margin-bottom: 0.4rem; font-weight: 600; }
+    .c-info  { background: var(--accent-2-dim); border-color: var(--accent-2); }
+    .c-info  .callout-title { color: var(--accent-2); }
+    .c-warn  { background: var(--pending-dim); border-color: var(--pending); }
+    .c-warn  .callout-title { color: var(--pending); }
+    .c-danger { background: var(--danger-dim); border-color: var(--danger); }
+    .c-danger .callout-title { color: var(--danger); }
+    .c-ok { background: rgba(125,214,181,0.07); border-color: var(--accent); }
+    .c-ok .callout-title { color: var(--accent); }
+    .pending-block {
+      border: 1px solid rgba(232,147,90,0.28);
+      border-radius: var(--r-lg);
+      background: var(--pending-dim);
+      padding: 1.2rem 1.4rem;
+      margin: 1.5rem 0;
+    }
+    .pending-block .pending-hd { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.65rem; }
+    .p-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--pending); flex-shrink: 0; }
+    .p-title { font-family: var(--font-head); font-size: 12.5px; font-weight: 700; color: var(--pending); text-transform: uppercase; letter-spacing: 0.04em; }
+    .pending-block p { color: var(--text-muted); font-size: 14px; margin-bottom: 0; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; font-size: 14px; }
+    thead th { background: var(--bg-surface-2); color: var(--text-muted); font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.09em; padding: 0.55rem 1rem; text-align: left; border-bottom: 1px solid var(--border); font-weight: 500; }
+    td { padding: 0.62rem 1rem; border-bottom: 1px solid var(--border-light); vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    .mono { font-family: var(--font-mono); font-size: 12.5px; }
+    .ok  { color: var(--accent); }
+    .bad { color: var(--danger); }
+    .strike { text-decoration: line-through; color: var(--text-dim); }
+
+    /* Folder tree */
+    .tree {
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 1.4rem 1.6rem;
+      overflow-x: auto;
+      line-height: 1.95;
+      white-space: pre;
+    }
+    .tf { color: var(--accent-2); }
+    .tc { color: var(--text-dim); }
+    .tw { color: var(--pending); }
+    .tr-folder { color: var(--danger); }
+
+    /* Branch anatomy */
+    .branch-pill {
+      display: inline-flex;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 0.7rem 1.3rem;
+      margin: 0.8rem 0 1rem;
+      gap: 0;
+    }
+    .bp-sep { color: var(--text-dim); }
+    .bp-f  { color: var(--accent-2); }
+    .bp-t  { color: var(--accent); }
+    .bp-d  { color: var(--text-muted); }
+
+    /* Flow diagram */
+    .flow {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.2rem 0;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+    }
+    .flow-node {
+      background: var(--bg-surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 0.4rem 0.85rem;
+      color: var(--heading);
+    }
+    .flow-node.hl { border-color: var(--accent); color: var(--accent); }
+    .flow-node.warn { border-color: var(--pending); color: var(--pending); }
+    .flow-arr { color: var(--text-dim); }
+
+    /* Layer cards */
+    .layer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1.2rem 0 1.8rem; }
+    .lcard { background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1rem 1.1rem 1.1rem; border-top: 3px solid; }
+    .lcard.l1 { border-top-color: #9b7ee8; }
+    .lcard.l2 { border-top-color: #5fb8a0; }
+    .lcard.l3 { border-top-color: #e8935a; }
+    .lcard-num { font-family: var(--font-mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.11em; margin-bottom: 0.3rem; }
+    .l1 .lcard-num { color: #9b7ee8; }
+    .l2 .lcard-num { color: #5fb8a0; }
+    .l3 .lcard-num { color: #e8935a; }
+    .lcard-title { font-family: var(--font-head); font-size: 14px; font-weight: 600; color: var(--heading); margin-bottom: 0.4rem; }
+    .lcard p { font-size: 13px; color: var(--text-muted); margin-bottom: 0; line-height: 1.5; }
+
+    /* Autoload card */
+    .acard {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 1.3rem 1.5rem;
+      margin: 1.5rem 0;
+    }
+    .acard-head { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
+    .acard-name { font-family: var(--font-head); font-size: 1rem; font-weight: 700; color: var(--heading); }
+    .acard-badge {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 3px;
+      border: 1px solid;
+    }
+    .ab-global { background: rgba(125,214,181,0.08); color: var(--accent); border-color: rgba(125,214,181,0.25); }
+    .ab-alias { background: rgba(90,159,222,0.08); color: var(--accent-2); border-color: rgba(90,159,222,0.25); }
+    .ab-pending { background: var(--pending-dim); color: var(--pending); border-color: rgba(232,147,90,0.25); }
+    .acard p { font-size: 14px; color: var(--text-muted); margin-bottom: 0.6rem; }
+    .acard p:last-child { margin-bottom: 0; }
+
+    /* Checklist */
+    .checklist { list-style: none; margin: 0; }
+    .checklist li { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.58rem 0; border-bottom: 1px solid var(--border-light); }
+    .checklist li:last-child { border-bottom: none; }
+    .checklist input[type="checkbox"] {
+      appearance: none; -webkit-appearance: none;
+      width: 17px; height: 17px; min-width: 17px;
+      border: 1.5px solid var(--border);
+      border-radius: 4px;
+      background: transparent;
+      cursor: pointer;
+      margin-top: 2px;
+      position: relative;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .checklist input[type="checkbox"]:checked { background: var(--accent); border-color: var(--accent); }
+    .checklist input[type="checkbox"]:checked::after {
+      content: '';
+      position: absolute;
+      left: 4px; top: 1px;
+      width: 5px; height: 9px;
+      border: 2px solid var(--bg);
+      border-top: none; border-left: none;
+      transform: rotate(45deg);
+    }
+    .cl-label { flex: 1; font-size: 14px; }
+
+    @media (max-width: 900px) {
+      .sidebar { display: none; }
+      .main { padding: 2rem 1.5rem 4rem; max-width: 100%; }
+      .layer-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════ SIDEBAR ══════════════════════ -->
+<nav class="sidebar" aria-label="Documentation navigation">
+  <div class="sidebar-brand">
+    <span class="brand-tag">CODE Team · Godot 4.6</span>
+    <div class="brand-title">[PROJECT NAME]<br>Contributor Docs</div>
+    <span class="brand-badge">v0.1.0-draft</span>
+  </div>
+
+  <div class="toc">
+    <span class="toc-group-label">Contents</span>
+
+    <div class="toc-item" style="margin-bottom:0.4rem;">
+      <a href="#tldr" style="color:var(--accent);border-left-color:var(--accent);background:var(--accent-dim);font-weight:600;"><span class="toc-num" style="color:var(--accent);">→</span> TL;DR — Quick Reference</a>
+    </div>
+
+    <div class="toc-item">
+      <a href="#about"><span class="toc-num">01</span> About This Document</a>
+    </div>
+
+    <details open>
+      <summary><span class="toc-num">02</span> Getting Started <span class="toc-toggle">▶</span></summary>
+      <ul class="toc-sub">
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#setup">Project Setup</a></li>
+      </ul>
+    </details>
+
+    <details open>
+      <summary><span class="toc-num">03</span> GitHub Workflow <span class="toc-toggle">▶</span></summary>
+      <ul class="toc-sub">
+        <li><a href="#full-flow">Full Branch Flow</a></li>
+        <li><a href="#picking-issues">Picking Up an Issue</a></li>
+        <li><a href="#branches">Branch Naming</a></li>
+        <li><a href="#commits">Commit Messages</a></li>
+        <li><a href="#pull-requests">Pull Requests</a></li>
+        <li><a href="#code-review">Code Review &amp; Merging</a></li>
+      </ul>
+    </details>
+
+    <details>
+      <summary><span class="toc-num">04</span> Project Structure <span class="toc-toggle">▶</span></summary>
+      <ul class="toc-sub">
+        <li><a href="#folder-ref">Folder Reference</a></li>
+        <li><a href="#colocation">The Co-location Rule</a></li>
+        <li><a href="#off-limits">Restricted Areas</a></li>
+      </ul>
+    </details>
+
+    <details>
+      <summary><span class="toc-num">05</span> Architecture <span class="toc-toggle">▶</span></summary>
+      <ul class="toc-sub">
+        <li><a href="#arch-overview">Overview</a></li>
+        <li><a href="#layer1">Layer 1 — Autoloads</a></li>
+        <li><a href="#layer2">Layer 2 — Base Classes</a></li>
+        <li><a href="#layer3">Layer 3 — Components</a></li>
+        <li><a href="#signals-primer">Signals Primer</a></li>
+        <li><a href="#component-template">Component Template</a></li>
+      </ul>
+    </details>
+
+    <details>
+      <summary><span class="toc-num">06</span> Coding Standards <span class="toc-toggle">▶</span></summary>
+      <ul class="toc-sub">
+        <li><a href="#naming">Naming Conventions</a></li>
+        <li><a href="#file-naming">File &amp; Scene Naming</a></li>
+        <li><a href="#constants">Constants</a></li>
+        <li><a href="#comments">Comments &amp; Docstrings</a></li>
+        <li><a href="#typos">Typo Policy</a></li>
+      </ul>
+    </details>
+
+    <details>
+      <summary><span class="toc-num">07</span> Autoload Reference <span class="toc-toggle">▶</span></summary>
+      <ul class="toc-sub">
+        <li><a href="#gameevents">GameEvents</a></li>
+        <li><a href="#gamestate">GameState</a></li>
+        <li><a href="#gamedata">GameData</a></li>
+        <li><a href="#inputmanager">InputManager</a></li>
+        <li><a href="#itemmanager">ItemManager</a></li>
+        <li><a href="#debugoverlay">DebugOverlay</a></li>
+        <li><a href="#editor-tuning">Editor Tuning Script</a></li>
+      </ul>
+    </details>
+
+    <details>
+      <summary><span class="toc-num">08</span> System Reference <span class="toc-toggle">▶</span></summary>
+      <ul class="toc-sub">
+        <li><a href="#baseentity-api">BaseEntity API</a></li>
+        <li><a href="#component-api">Component Interface</a></li>
+        <li><a href="#inputmanager-api">InputManager API</a></li>
+      </ul>
+    </details>
+
+    <div class="toc-item">
+      <a href="#checklist"><span class="toc-num">09</span> PR Checklist</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════════════════ MAIN ══════════════════════ -->
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <span class="hero-tag">[STUDIO NAME] · Godot 4.6 · GDScript</span>
+    <h1>[PROJECT NAME]</h1>
+    <p class="hero-sub">Code Team Standard Operating Procedures &amp; API Reference</p>
+    <div class="hero-meta">
+      <span class="meta-item">Version &nbsp;<b>0.1.0-draft</b></span>
+      <span class="meta-item">Engine &nbsp;<b>Godot 4.6</b></span>
+      <span class="meta-item">Team &nbsp;<b>CODE</b></span>
+      <span class="meta-item">Lead Programmer &nbsp;<b>Drykul</b></span>
+      <span class="meta-item">Project Lead &nbsp;<b>Form</b></span>
+    </div>
+  </div>
+
+  <!-- ══ 01  ABOUT ══ -->
+  <section class="section" id="about">
+    <span class="section-tag">Section 01</span>
+    <h2>About This Document</h2>
+
+    <p>This document is the single source of truth for all code contributors on [PROJECT NAME]. It defines how work is picked up and delivered, how the project is structured, the architectural patterns all code must follow, and the standards your code is held to during review.</p>
+
+    <p>This is a <strong>living document</strong>. Sections marked <strong style="color:var(--pending)">⚠ PENDING</strong> contain decisions still being finalized. Do not make assumptions about those areas — treat them as off-limits until this document is updated.</p>
+
+    <div class="callout c-info">
+      <span class="callout-title">Proposing changes to this document</span>
+      <p>All proposed additions or corrections must go through the lead programmer (<strong>Drykul</strong>) via the <strong>#programming</strong> channel on Discord before any change is made. Do not submit PRs that modify this file without prior approval.</p>
+    </div>
+
+    <h3>A note on PENDING sections</h3>
+    <p>Sections marked with an orange <strong style="color:var(--pending)">⚠ PENDING</strong> badge contain rules or documentation that are still being decided. These are placeholders — they tell you a rule exists here but is not yet finalized. Do not attempt to fill in the blanks yourself. Raise questions in <strong>#programming</strong>.</p>
+  </section>
+
+  <!-- ══ 02  GETTING STARTED ══ -->
+  <section class="section" id="getting-started">
+    <span class="section-tag">Section 02</span>
+    <h2>Getting Started</h2>
+
+    <div class="subsection" id="prerequisites">
+      <h3>Prerequisites</h3>
+      <p>Before contributing, ensure you have the following installed and set up:</p>
+      <ul>
+        <li><strong>Godot 4.6</strong> — use the standard build. Do not use the Mono/.NET version unless explicitly instructed.</li>
+        <li><strong>GitHub Desktop</strong> — the recommended Git client for this project. Most contributors are assumed to be using it. If you prefer a different Git client or the command line, that is fine, but support in <strong>#programming</strong> will primarily be given for GitHub Desktop.</li>
+        <li><strong>A GitHub account</strong> — required for issue assignments and pull requests. Make sure you have been granted repository access before attempting to clone.</li>
+        <li><strong>A code editor</strong> — Godot's built-in script editor is sufficient for most work. VS Code with the <em>Godot Tools</em> extension is also commonly used and provides better autocompletion for GDScript.</li>
+      </ul>
+    </div>
+
+    <div class="subsection" id="setup">
+      <h3>Project Setup</h3>
+      <ol>
+        <li>In GitHub Desktop, go to <strong>File → Clone Repository</strong>, find [PROJECT NAME], and clone it to a location on your machine.</li>
+        <li>Open Godot 4.6 and import the project by clicking <strong>Import</strong> and pointing it at the <code>project.godot</code> file inside your cloned folder.</li>
+        <li>Allow the Godot importer to run on first open. This is normal and may take a moment. Do not manually re-import assets that already exist in the project.</li>
+        <li>Verify the project opens and runs without errors before picking up any work. If you see errors on a clean clone, report them in <strong>#programming</strong> before doing anything else.</li>
+      </ol>
+
+      <div class="callout c-warn">
+        <span class="callout-title">#programming is your home base</span>
+        <p>All questions about issues, architecture decisions, file placement, or anything code-related must go through the <strong>#programming</strong> channel on Discord. Do not use GitHub issue comments as a substitute for a conversation that needs a decision from the lead programmer.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 03  GITHUB WORKFLOW ══ -->
+  <section class="section" id="github-workflow">
+    <span class="section-tag">Section 03</span>
+    <h2>GitHub Workflow</h2>
+
+    <div class="subsection" id="full-flow">
+      <h3>Full Branch Flow</h3>
+      <p>Understanding the full picture helps you know where your work fits. The project uses a structured multi-stage branch flow:</p>
+
+      <div class="flow">
+        <span class="flow-node hl">feature branch</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-node hl">department branch</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-node">MERGE</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-node">dev</span>
+      </div>
+
+      <p>As a CODE team contributor, your work lives entirely in the first two stages. You create a <strong>feature branch</strong> off of <code>code</code> (the CODE team's department branch), do your work, and open a PR back into <code>code</code>. Everything beyond that — merging department branches into <code>MERGE</code> and integrating into <code>dev</code> — is handled by department leads at scheduled sync times.</p>
+
+      <div class="callout c-info">
+        <span class="callout-title">About dev and the backup procedure</span>
+        <p><code>dev</code> is the permanent unified build branch used for testing across all teams. There is no <code>main</code> branch. Before every integration of <code>MERGE</code> into <code>dev</code>, leads delete the previous backup and clone the current state of <code>dev</code> into a fresh standalone <code>backup</code> branch — then <code>MERGE</code> is integrated into <code>dev</code>. The backup is a safety snapshot, not a merge target. As a CODE contributor you will never interact with <code>dev</code>, <code>MERGE</code>, or <code>backup</code> directly.</p>
+      </div>
+
+      <div class="callout c-danger">
+        <span class="callout-title">Never target dev in your PR</span>
+        <p>All CODE team pull requests must target the <code>code</code> branch only. Pull requests targeting <code>dev</code> will be closed without review.</p>
+      </div>
+    </div>
+
+    <div class="subsection" id="picking-issues">
+      <h3>Picking Up an Issue</h3>
+      <p>All work is tracked through GitHub Issues. There are two ways to receive work:</p>
+      <ul>
+        <li><strong>Direct assignment</strong> — Drykul assigns an issue to you and will notify you via <strong>#programming</strong> or a Discord DM. You do not need to monitor your GitHub notifications for this.</li>
+        <li><strong>Self-selection</strong> — browse open issues and filter by the <strong>Code</strong> label. Any issue without an assignee is free to pick up. Before starting work, self-assign it in GitHub so others know it is taken.</li>
+      </ul>
+
+      <div class="callout c-danger">
+        <span class="callout-title">Never work on an already-assigned issue</span>
+        <p>If an issue already has an assignee, do not begin work on it without coordinating in <strong>#programming</strong> first. Duplicate work will not be merged.</p>
+      </div>
+    </div>
+
+    <div class="subsection" id="branches">
+      <h3>Branch Naming</h3>
+      <p>All CODE team branches must follow this exact naming convention:</p>
+
+      <div class="branch-pill">
+        <span class="bp-f">Feature</span><span class="bp-sep">-</span><span class="bp-t">CODE</span><span class="bp-sep">-</span><span class="bp-d">feature-name</span>
+      </div>
+
+      <p>The <code>Feature</code> prefix is always capitalized and always present. <code>CODE</code> is always uppercase and identifies this as a CODE team branch — other teams use their own designators (<code>LEVDEV</code>, <code>ART</code>, <code>SOUND</code>, etc.). The final segment must be short, all lowercase, hyphen-separated, and clearly describe the work being done.</p>
+
+      <h4>Examples</h4>
+      <table>
+        <thead><tr><th>Branch Name</th><th>Valid</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">Feature-CODE-bauble-component</td><td class="ok">✓</td><td>Clear and correct</td></tr>
+          <tr><td class="mono">Feature-CODE-input-rebinding</td><td class="ok">✓</td><td>Descriptive, correct format</td></tr>
+          <tr><td class="mono strike">fix-bauble-bug</td><td class="bad">✗</td><td>Missing team code, wrong format</td></tr>
+          <tr><td class="mono strike">Feature-CODE-stuff</td><td class="bad">✗</td><td>Too vague — describe the actual work</td></tr>
+          <tr><td class="mono strike">Feature-ART-fish-sprites</td><td class="bad">✗</td><td>Wrong team code for a CODE branch</td></tr>
+        </tbody>
+      </table>
+
+      <p>In GitHub Desktop: after cloning, go to <strong>Branch → New Branch</strong>, type the full branch name exactly as shown above, and make sure it is based on <code>code</code>. Drykul will delete your branch once it has been successfully merged.</p>
+    </div>
+
+    <div class="subsection" id="commits">
+      <h3>Commit Messages</h3>
+      <p>Commit messages are freeform — there is no enforced format. However, every message must be <strong>meaningful</strong>. It should describe what changed and why, not merely that something changed.</p>
+
+      <table>
+        <thead><tr><th>Message</th><th>Valid</th></tr></thead>
+        <tbody>
+          <tr><td><em>"Add BaubleComponent with biome access checking and GameEvents signal"</em></td><td class="ok">✓</td></tr>
+          <tr><td><em>"Fix null reference in InputManager when no active context is set"</em></td><td class="ok">✓</td></tr>
+          <tr><td><em>"stuff"</em></td><td class="bad">✗</td></tr>
+          <tr><td><em>"fixed it"</em></td><td class="bad">✗</td></tr>
+          <tr><td><em>"wip"</em></td><td class="bad">✗ — see below</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Squashing WIP commits before a PR</h4>
+      <p>While working on a branch it is natural to make many small commits — <em>"wip"</em>, <em>"testing"</em>, <em>"maybe this"</em>. Before opening a PR you need to <strong>squash</strong> those messy intermediate commits into one or a few clean, descriptive ones. This keeps the project history readable for everyone.</p>
+
+      <p>In <strong>GitHub Desktop</strong>:</p>
+      <ol>
+        <li>Click the <strong>History</strong> tab on your branch.</li>
+        <li>Select the commits you want to combine — hold <strong>Shift</strong> to select a range, or <strong>Ctrl</strong> to select individual ones.</li>
+        <li>Right-click the selection and choose <strong>Squash [X] commits…</strong></li>
+        <li>Write a single meaningful commit message describing the full change.</li>
+        <li>Confirm. Your branch history is now clean.</li>
+      </ol>
+
+      <div class="callout c-warn">
+        <span class="callout-title">Squash before opening the PR, not after</span>
+        <p>Once a PR is open and a review has started, rewriting history on the branch causes confusion. Squash your commits <em>before</em> you open the PR.</p>
+      </div>
+    </div>
+
+    <div class="subsection" id="pull-requests">
+      <h3>Pull Requests</h3>
+      <p>When your branch is ready, open a PR in GitHub Desktop by clicking <strong>Branch → Create Pull Request</strong>. This opens GitHub in your browser. Before submitting, confirm the <strong>base branch</strong> is set to <code>code</code>, then notify <strong>Drykul</strong> via <strong>#programming</strong> or a DM on Discord.</p>
+
+      <h4>Description</h4>
+      <p>PR descriptions are intentionally lightweight. All that is required is a <strong>short, plain-language summary</strong> of what the PR does — a few sentences is enough. Write it at a level where someone unfamiliar with the specific issue can understand the gist of the change at a glance.</p>
+
+      <table>
+        <thead><tr><th>Description</th><th>Valid</th></tr></thead>
+        <tbody>
+          <tr><td><em>"Adds BaubleComponent. Checks player inventory for a specified bauble ID and emits a signal when a matching bauble is found. Wired to GameEvents."</em></td><td class="ok">✓</td></tr>
+          <tr><td><em>"Fixed the input bug."</em></td><td class="bad">✗ — too vague, describes nothing useful</td></tr>
+          <tr><td><em>(empty)</em></td><td class="bad">✗ — always write something</td></tr>
+        </tbody>
+      </table>
+
+      <p>If your PR closes a specific GitHub issue you are welcome to reference it (e.g. <code>Closes #42</code>), but this is not required.</p>
+
+      <div class="callout c-warn">
+        <span class="callout-title">Squash before you open</span>
+        <p>Make sure your WIP commits are squashed into meaningful commit messages <em>before</em> opening the PR. See <a href="#commits">Commit Messages</a> for how to do this in GitHub Desktop.</p>
+      </div>
+    </div>
+
+    <div class="subsection" id="code-review">
+      <h3>Code Review &amp; Merging</h3>
+      <p><strong>Drykul</strong> reviews and approves every pull request before it is merged. There are no exceptions. Do not merge your own PR under any circumstances, even if you have the repository permissions to do so. Drykul will also delete your feature branch once it has been merged.</p>
+
+      <p>During review you may receive change requests. Address all of them in new commits on the same branch — do not close and re-open a new PR. Once all changes are addressed, notify Drykul via <strong>#programming</strong> or DM. Do not use GitHub's re-request review button as a substitute for a message.</p>
+
+      <div class="callout c-info">
+        <span class="callout-title">Review turnaround</span>
+        <p>This is a volunteer project. If your PR has not received a review within a reasonable time, send a message in <strong>#programming</strong>. Do not leave reminder comments on the PR itself.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 04  PROJECT STRUCTURE ══ -->
+  <section class="section" id="project-structure">
+    <span class="section-tag">Section 04</span>
+    <h2>Project Structure</h2>
+
+    <div class="subsection" id="folder-ref">
+      <h3>Folder Reference</h3>
+      <div class="tree"><span class="tf">res://</span>
+├── <span class="tf">addons/</span>                        <span class="tc"># Auto-generated. Never modify manually.</span>
+├── <span class="tf">assets/</span>
+│   ├── <span class="tf">art/</span>
+│   │   ├── <span class="tf">characters/</span>              <span class="tc"># Character sprite sheets and portraits</span>
+│   │   ├── <span class="tf">environment/</span>             <span class="tc"># Tiles, backgrounds, terrain art</span>
+│   │   ├── <span class="tf">items/</span>                   <span class="tc"># Item icons and sprites</span>
+│   │   ├── <span class="tr-folder">item_shape_previews/</span>     <span class="tc"># Inventory extension ONLY — do not use elsewhere</span>
+│   │   ├── <span class="tf">placeholder/</span>             <span class="tc"># Temporary stand-in assets only</span>
+│   │   ├── <span class="tf">props/</span>
+│   │   └── <span class="tf">ui/</span>                      <span class="tc"># UI textures, icons, nine-patches</span>
+│   └── <span class="tf">audio/</span>
+│       ├── <span class="tf">music/</span>
+│       └── <span class="tf">sfx/</span>
+├── <span class="tf">data/</span>                          <span class="tc"># Item databases, stat tables, config resources</span>
+├── <span class="tf">scenes/</span>
+│   ├── <span class="tf">characters/</span>
+│   │   └── <span class="tf">player/</span>                  <span class="tc"># Player.tscn + Player.gd (co-located)</span>
+│   ├── <span class="tf">components/</span>                  <span class="tc"># Reusable components — .tscn + .gd co-located</span>
+│   ├── <span class="tf">creatures/</span>                   <span class="tc"># Real and fictional animals in the game world</span>
+│   ├── <span class="tf">environment/</span>
+│   ├── <span class="tf">prefabs/</span>                     <span class="tc"># Building block scenes assembled into larger scenes</span>
+│   └── <span class="tf">ui/</span>
+│       ├── <span class="tf">containers/</span>              <span class="tc"># InventoryContainer.tscn + InventoryContainer.gd</span>
+│       ├── <span class="tf">custom_nodes/</span>            <span class="tc"># Custom reusable UI nodes (e.g. TentacleButton)</span>
+│       ├── <span class="tf">debug/</span>                   <span class="tc"># DebugOverlay.tscn — dev tools, not in final build</span>
+│       ├── <span class="tf">items/</span>                   <span class="tc"># ItemUI.tscn + ItemUI.gd</span>
+│       ├── <span class="tf">main_menu/</span>               <span class="tc"># MainMenu.tscn + MainMenu.gd</span>
+│       ├── <span class="tf">pause_menu/</span>              <span class="tc"># PauseMenu.tscn + PauseMenu.gd</span>
+│       └── <span class="tf">settings_menu/</span>           <span class="tc"># SettingsMenu.tscn + SettingsMenu.gd</span>
+├── <span class="tf">scripts/</span>
+│   ├── <span class="tf">autoloads/</span>                   <span class="tc"># Layer 1 — global singletons only</span>
+│   ├── <span class="tf">base/</span>                        <span class="tc"># Layer 2 — base classes</span>
+│   ├── <span class="tf">camera/</span>                      <span class="tc"># PlayerCamera.gd</span>
+│   ├── <span class="tf">input/</span>                       <span class="tc"># InputManager system — IInputContext, InputMode, contexts</span>
+│   │   └── <span class="tf">contexts/</span>               <span class="tc"># Input context classes</span>
+│   ├── <span class="tf">stats/</span>                       <span class="tc"># Editor tuning script</span>
+│   └── <span class="tf">ui/</span>                          <span class="tc"># Shared UI scripts serving more than one scene</span>
+└── <span class="tf">shaders/</span></div>
+    </div>
+
+    <div class="subsection" id="colocation">
+      <h3>The Co-location Rule</h3>
+      <div class="callout c-info">
+        <span class="callout-title">Co-location Rule</span>
+        <p>A <code>.gd</code> script lives in the same folder as its <code>.tscn</code> file <strong>if and only if</strong> that script is used exclusively by that one scene. If a script serves more than one scene, or has no associated scene at all, it belongs in <code>scripts/</code>.</p>
+      </div>
+
+      <table>
+        <thead><tr><th>File</th><th>Location</th><th>Reason</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">Player.gd</td><td class="mono">scenes/characters/player/</td><td>Used only by Player.tscn</td></tr>
+          <tr><td class="mono">Elias.gd</td><td class="mono">scenes/characters/Elias/</td><td>Used only by Elias.tscn</td></tr>
+          <tr><td class="mono">BaubleComponent.gd</td><td class="mono">scenes/components/BaubleComponent/</td><td>Used only by BaubleComponent.tscn</td></tr>
+          <tr><td class="mono">BaseEntity.gd</td><td class="mono">scripts/base/</td><td>Extended by many scenes — belongs to none</td></tr>
+          <tr><td class="mono">GameEvents.gd</td><td class="mono">scripts/autoloads/</td><td>No associated scene — global singleton</td></tr>
+          <tr><td class="mono">AnimatedButton.gd</td><td class="mono">scripts/ui/</td><td>Used by multiple UI scenes</td></tr>
+        </tbody>
+      </table>
+
+      <p>When in doubt about where a file belongs, ask in <strong>#programming</strong> before placing it.</p>
+    </div>
+
+    <div class="subsection" id="off-limits">
+      <h3>Restricted Areas</h3>
+      <p>The following folder is restricted and must not be used outside of its designated purpose.</p>
+
+      <table>
+        <thead><tr><th>Folder</th><th>Status</th><th>Contact</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">assets/art/item_shape_previews/</td><td style="color:var(--danger)">Restricted — inventory extension only</td><td>Drykul</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══ 05  ARCHITECTURE ══ -->
+  <section class="section" id="architecture">
+    <span class="section-tag">Section 05</span>
+    <h2>Architecture</h2>
+
+    <div class="subsection" id="arch-overview">
+      <h3>Overview</h3>
+      <p>All game code follows a three-layer architecture. Every script you write belongs to exactly one of these layers. Understanding which layer your work belongs to before writing any code is the most important habit to build as a contributor on this project.</p>
+
+      <div class="layer-grid">
+        <div class="lcard l1">
+          <div class="lcard-num">Layer 1</div>
+          <div class="lcard-title">Autoloads</div>
+          <p>Global singletons always accessible from any script. Strictly gatekept — never created without Drykul's approval.</p>
+        </div>
+        <div class="lcard l2">
+          <div class="lcard-num">Layer 2</div>
+          <div class="lcard-title">Base Classes</div>
+          <p>Thin inherited scripts that give all entities a guaranteed interface. You may create new ones, but never modify existing ones without permission.</p>
+        </div>
+        <div class="lcard l3">
+          <div class="lcard-num">Layer 3</div>
+          <div class="lcard-title">Components</div>
+          <p>Self-contained child scenes with documented extension points. The primary location for volunteer contributions.</p>
+        </div>
+      </div>
+
+      <p>The layers interact in one direction only: Layer 3 communicates upward via signals, either locally or through the <code>GameEvents</code> Autoload. No layer reaches downward to call methods directly on nodes it does not own.</p>
+    </div>
+
+    <div class="subsection" id="layer1">
+      <h3>Layer 1 — Autoloads</h3>
+      <p>Autoloads live in <code>scripts/autoloads/</code> and are globally accessible from any script by their name — no <code>get_node()</code> path required. They represent core systems that need to persist across all scenes and be reachable by unrelated parts of the project.</p>
+
+      <div class="callout c-danger">
+        <span class="callout-title">Do not create new Autoloads without approval</span>
+        <p>If you believe a system you are building qualifies as an Autoload, raise it in <strong>#programming</strong> before writing any code. Do not self-promote scripts to Autoload status. Creating an unauthorized Autoload will result in the PR being returned.</p>
+      </div>
+
+      <p>As a CODE contributor, your most common interaction with Layer 1 will be emitting and connecting to signals on <code>GameEvents</code>. See <a href="#gameevents">Section 07 — GameEvents</a> for usage details.</p>
+    </div>
+
+    <div class="subsection" id="layer2">
+      <h3>Layer 2 — Base Classes</h3>
+      <p>Base classes live in <code>scripts/base/</code> and define the shared interface that groups of related entities must expose. The primary example used throughout this document is <code>BaseEntity</code> — note that this is a <strong>placeholder name used for illustration purposes</strong>. The actual class names used in this project will differ and will be documented in Section 08 as they are established.</p>
+
+      <p>Extending a base class gives your entity guaranteed lifecycle hooks and signals without having to define them from scratch. Every entity that shares behavior with other entities should extend the appropriate base class.</p>
+
+      <div class="callout c-ok">
+        <span class="callout-title">You can create new base classes</span>
+        <p>If you are building a group of entities that share behavior and no suitable base class exists yet, you are encouraged to create one. Place it in <code>scripts/base/</code> and raise it in <strong>#programming</strong> so Drykul is aware of it.</p>
+      </div>
+
+      <div class="callout c-danger">
+        <span class="callout-title">Never modify an existing base class without permission</span>
+        <p>A change to an existing base class affects every entity that extends it — potentially the entire project. You must get explicit approval from the original author of the base class or from <strong>Drykul</strong> before making any changes. Raise it in <strong>#programming</strong> first.</p>
+      </div>
+
+      <p>The <strong>Player</strong> is a notable exception to the base class rule. Because the player character has a unique set of attributes and behaviors that no other entity shares, <code>Player</code> extends <code>CharacterBody3D</code> directly rather than a shared base class. This is intentional and is the only entity with this exemption.</p>
+
+<pre><span class="code-lang">GDScript</span><code><span class="cm"># scenes/characters/Elias/Elias.gd</span>
+<span class="cm"># Elias is an NPC entity — he extends a shared base class.</span>
+<span class="kw">class_name</span> <span class="ty">Elias</span>
+<span class="kw">extends</span> <span class="ty">BaseEntity</span>
+
+<span class="kw">func</span> <span class="fn">_entity_ready</span>() -> <span class="ty">void</span>:
+    <span class="cm"># Called by BaseEntity._ready(). Put entity init logic here.</span>
+    <span class="cm"># Do not override _ready() directly in entities.</span>
+    <span class="kw">pass</span>
+
+<span class="kw">func</span> <span class="fn">_entity_die</span>() -> <span class="ty">void</span>:
+    <span class="cm"># Called by BaseEntity.die(). Put cleanup logic here.</span>
+    <span class="kw">pass</span></code></pre>
+    </div>
+
+    <div class="subsection" id="layer3">
+      <h3>Layer 3 — Components</h3>
+      <p>Components are self-contained child scenes attached to entities in the scene tree. This is where most volunteer contribution happens. A well-written component has no knowledge of its parent entity beyond what is passed to it through <code>@export</code> variables configured in the editor.</p>
+
+      <p>The example below is based on a <strong>planned</strong> <code>BaubleComponent</code> — baubles are inventory items that unlock gameplay features such as access to new biomes. The final implementation may differ, but the structural pattern shown here is what all components must follow regardless of what they do.</p>
+
+<pre><span class="code-lang">GDScript — planned example (BaubleComponent)</span><code><span class="cm"># scenes/components/BaubleComponent/BaubleComponent.gd</span>
+<span class="kw">class_name</span> <span class="ty">BaubleComponent</span>
+<span class="kw">extends</span> <span class="ty">Node</span>
+
+<span class="cm"># ── EXPORTS ───────────────────────────────────────────────────────────────</span>
+<span class="an">@export</span> <span class="kw">var</span> required_bauble_id: <span class="ty">String</span> = <span class="st">""</span>
+<span class="an">@export</span> <span class="kw">var</span> unlocks_biome_id: <span class="ty">String</span> = <span class="st">""</span>
+
+<span class="cm"># ── SIGNALS ───────────────────────────────────────────────────────────────</span>
+<span class="kw">signal</span> <span class="fn">biome_unlocked</span>(biome_id: <span class="ty">String</span>)
+<span class="kw">signal</span> <span class="fn">access_denied</span>()
+
+<span class="cm"># ── LIFECYCLE ─────────────────────────────────────────────────────────────</span>
+<span class="kw">func</span> <span class="fn">_ready</span>() -> <span class="ty">void</span>:
+    <span class="kw">pass</span>
+
+<span class="cm"># ── PUBLIC INTERFACE ──────────────────────────────────────────────────────</span>
+<span class="cm">## Checks whether the player's inventory contains the required bauble.</span>
+<span class="cm">## Emits biome_unlocked if access is granted, access_denied if not.</span>
+<span class="cm">## Does not modify the inventory — read only.</span>
+<span class="kw">func</span> <span class="fn">check_access</span>(inventory: <span class="ty">InventoryContainer</span>) -> <span class="ty">void</span>:
+    <span class="kw">if</span> <span class="fn">_inventory_has_bauble</span>(inventory, required_bauble_id):
+        <span class="fn">biome_unlocked</span>.<span class="fn">emit</span>(unlocks_biome_id)
+        <span class="fn">GameEvents</span>.biome_access_granted.<span class="fn">emit</span>(unlocks_biome_id)
+    <span class="kw">else</span>:
+        <span class="fn">access_denied</span>.<span class="fn">emit</span>()
+
+<span class="cm"># ── PRIVATE ───────────────────────────────────────────────────────────────</span>
+<span class="kw">func</span> <span class="fn">_inventory_has_bauble</span>(inventory: <span class="ty">InventoryContainer</span>, id: <span class="ty">String</span>) -> <span class="ty">bool</span>:
+    <span class="kw">return false</span> <span class="cm"># implementation pending</span></code></pre>
+
+      <div class="callout c-danger">
+        <span class="callout-title">Never call get_parent() to reach the owning entity</span>
+        <p>A component that calls <code>get_parent()</code> and then invokes methods on the result is tightly coupled to a specific parent type. It is no longer reusable or portable. Communicate outward through signals only.</p>
+      </div>
+    </div>
+
+    <div class="subsection" id="signals-primer">
+      <h3>Signals Primer</h3>
+      <p>Signals are Godot's built-in event system. They allow one node to notify other nodes that something happened — without either node needing a direct reference to the other. This is the primary way components and systems communicate in this project.</p>
+
+      <h4>Declaring a signal</h4>
+      <p>Signals are declared at the top of a script, alongside your exports and variables. They can carry data as typed parameters.</p>
+
+<pre><span class="code-lang">GDScript — declaring signals</span><code><span class="cm"># A signal with no data</span>
+<span class="kw">signal</span> <span class="fn">cast_started</span>()
+
+<span class="cm"># A signal that carries data</span>
+<span class="kw">signal</span> <span class="fn">fish_caught</span>(fish_name: <span class="ty">String</span>, weight: <span class="ty">float</span>)</code></pre>
+
+      <h4>Emitting a signal</h4>
+      <p>Call <code>.emit()</code> on the signal when the event occurs. Any node that has connected to this signal will be notified automatically.</p>
+
+<pre><span class="code-lang">GDScript — emitting signals</span><code><span class="kw">func</span> <span class="fn">on_fish_reeled_in</span>(fish_name: <span class="ty">String</span>, weight: <span class="ty">float</span>) -> <span class="ty">void</span>:
+    <span class="fn">fish_caught</span>.<span class="fn">emit</span>(fish_name, weight)</code></pre>
+
+      <h4>Connecting to a signal</h4>
+      <p>To listen for a signal, connect it to a function in <code>_ready()</code>. The function you connect to must accept the same parameters the signal carries.</p>
+
+<pre><span class="code-lang">GDScript — connecting to signals</span><code><span class="kw">func</span> <span class="fn">_ready</span>() -> <span class="ty">void</span>:
+    <span class="cm"># Connect this node's own signal to a local function</span>
+    fish_caught.<span class="fn">connect</span>(_on_fish_caught)
+
+    <span class="cm"># Connect to another node's signal</span>
+    $<span class="ty">FishingRod</span>.cast_started.<span class="fn">connect</span>(_on_cast_started)
+
+<span class="kw">func</span> <span class="fn">_on_fish_caught</span>(fish_name: <span class="ty">String</span>, weight: <span class="ty">float</span>) -> <span class="ty">void</span>:
+    <span class="fn">print</span>(<span class="st">"Caught a %s weighing %.1f kg!"</span> % [fish_name, weight])
+
+<span class="kw">func</span> <span class="fn">_on_cast_started</span>() -> <span class="ty">void</span>:
+    <span class="kw">pass</span></code></pre>
+
+      <h4>Local signals vs. GameEvents</h4>
+      <p>Not every signal belongs on <code>GameEvents</code>. Use this rule to decide:</p>
+
+      <table>
+        <thead><tr><th>Situation</th><th>Use</th></tr></thead>
+        <tbody>
+          <tr><td>Only the parent entity cares about this event</td><td>Local signal on the component</td></tr>
+          <tr><td>Two or more unrelated systems need to know about this event</td><td><code>GameEvents</code> signal</td></tr>
+        </tbody>
+      </table>
+
+      <p>For example, a <code>FishingRodComponent</code> emitting <code>cast_started</code> for the owning entity to animate — that is a local signal. A fish being caught that the UI, the achievement system, and the economy system all need to react to — that belongs on <code>GameEvents</code>.</p>
+
+<pre><span class="code-lang">GDScript — GameEvents usage</span><code><span class="cm"># Emitting on GameEvents (from anywhere in the codebase)</span>
+<span class="fn">GameEvents</span>.fish_caught.<span class="fn">emit</span>(fish_name, weight)
+
+<span class="cm"># Connecting to a GameEvents signal in _ready()</span>
+<span class="kw">func</span> <span class="fn">_ready</span>() -> <span class="ty">void</span>:
+    <span class="fn">GameEvents</span>.fish_caught.<span class="fn">connect</span>(_on_fish_caught)
+
+<span class="kw">func</span> <span class="fn">_on_fish_caught</span>(fish_name: <span class="ty">String</span>, weight: <span class="ty">float</span>) -> <span class="ty">void</span>:
+    <span class="kw">pass</span></code></pre>
+    </div>
+
+    <div class="subsection" id="component-template">
+      <h3>Component Template</h3>
+      <p>When creating a new component, copy this template as your starting point. Replace all bracketed placeholders. Do not remove or reorder the section headers — they help reviewers navigate unfamiliar components quickly.</p>
+
+<pre><span class="code-lang">GDScript — component template</span><code><span class="cm"># scenes/components/[ComponentName]/[ComponentName].gd</span>
+<span class="kw">class_name</span> <span class="ty">[ComponentName]</span>
+<span class="kw">extends</span> <span class="ty">Node</span>
+
+<span class="cm"># ── EXPORTS ───────────────────────────────────────────────────────────────</span>
+<span class="an">@export</span> <span class="kw">var</span> [export_var]: <span class="ty">[Type]</span> = [default_value]
+
+<span class="cm"># ── STATE ─────────────────────────────────────────────────────────────────</span>
+<span class="kw">var</span> [internal_var]: <span class="ty">[Type]</span>
+
+<span class="cm"># ── SIGNALS ───────────────────────────────────────────────────────────────</span>
+<span class="kw">signal</span> <span class="fn">[component_event]</span>([params])
+
+<span class="cm"># ── LIFECYCLE ─────────────────────────────────────────────────────────────</span>
+<span class="kw">func</span> <span class="fn">_ready</span>() -> <span class="ty">void</span>:
+    <span class="kw">pass</span>
+
+<span class="cm"># ── PUBLIC INTERFACE ──────────────────────────────────────────────────────</span>
+<span class="cm">## [Document here if behaviour is non-obvious.]</span>
+<span class="kw">func</span> <span class="fn">[public_method]</span>([params]) -> <span class="ty">[ReturnType]</span>:
+    <span class="kw">pass</span>
+
+<span class="cm"># ── PRIVATE ───────────────────────────────────────────────────────────────</span>
+<span class="kw">func</span> <span class="fn">_[private_method]</span>([params]) -> <span class="ty">[ReturnType]</span>:
+    <span class="kw">pass</span></code></pre>
+    </div>
+  </section>
+
+  <!-- ══ 06  CODING STANDARDS ══ -->
+  <section class="section" id="coding-standards">
+    <span class="section-tag">Section 06</span>
+    <h2>Coding Standards</h2>
+
+    <div class="subsection" id="naming">
+      <h3>Naming Conventions</h3>
+      <p>All GDScript follows the official GDScript community naming standard without exception.</p>
+
+      <table>
+        <thead><tr><th>Identifier type</th><th>Convention</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>Variables</td><td class="mono">snake_case</td><td class="mono ok">cast_distance, lure_weight</td></tr>
+          <tr><td>Functions (public)</td><td class="mono">snake_case</td><td class="mono ok">check_access(), get_stat()</td></tr>
+          <tr><td>Functions (private)</td><td class="mono">_snake_case</td><td class="mono ok">_calculate_bite_chance()</td></tr>
+          <tr><td>Constants</td><td class="mono">SCREAMING_SNAKE_CASE</td><td class="mono ok">MAX_CAST_DISTANCE, BASE_REEL_SPEED</td></tr>
+          <tr><td>Classes &amp; nodes</td><td class="mono">PascalCase</td><td class="mono ok">BaubleComponent, BaseEntity</td></tr>
+          <tr><td>Signals</td><td class="mono">snake_case</td><td class="mono ok">fish_caught, biome_unlocked</td></tr>
+          <tr><td>Enums</td><td class="mono">PascalCase</td><td class="mono ok">BiomeType, LureCategory</td></tr>
+          <tr><td>Enum values</td><td class="mono">SCREAMING_SNAKE_CASE</td><td class="mono ok">BiomeType.DEEP_OCEAN</td></tr>
+        </tbody>
+      </table>
+
+      <p>All function parameters and return types must be explicitly typed. Untyped code will be flagged during review. If you have a genuine technical reason to skip typing in a specific case, document it with an inline comment.</p>
+
+<pre><span class="code-lang">GDScript — naming examples</span><code><span class="cm"># CORRECT</span>
+<span class="kw">var</span> lure_weight: <span class="ty">float</span> = <span class="no">1.5</span>
+<span class="kw">const</span> MAX_CAST_DISTANCE: <span class="ty">float</span> = <span class="no">50.0</span>
+
+<span class="kw">func</span> <span class="fn">calculate_bite_chance</span>(depth: <span class="ty">float</span>, bait_id: <span class="ty">String</span>) -> <span class="ty">float</span>:
+    <span class="kw">return</span> <span class="no">0.0</span>
+
+<span class="cm"># INCORRECT</span>
+<span class="kw">var</span> LureWeight = <span class="no">1.5</span>            <span class="cm"># PascalCase on a variable; untyped</span>
+<span class="kw">var</span> lw: <span class="ty">float</span> = <span class="no">1.5</span>             <span class="cm"># Cryptic abbreviation</span>
+<span class="kw">func</span> <span class="fn">CalcBite</span>(d, b):            <span class="cm"># PascalCase; untyped params; no return type</span>
+    <span class="kw">return</span> <span class="no">0.0</span></code></pre>
+    </div>
+
+    <div class="subsection" id="file-naming">
+      <h3>File &amp; Scene Naming</h3>
+      <p>All <code>.gd</code> and <code>.tscn</code> files use <strong>PascalCase</strong> exactly matching the <code>class_name</code> or root node name they define. Folder names use <strong>lowercase</strong> with no spaces.</p>
+
+      <table>
+        <thead><tr><th>Filename</th><th>Valid</th></tr></thead>
+        <tbody>
+          <tr><td class="mono ok">BaubleComponent.tscn</td><td class="ok">✓</td></tr>
+          <tr><td class="mono ok">BaubleComponent.gd</td><td class="ok">✓</td></tr>
+          <tr><td class="mono strike">bauble_component.tscn</td><td class="bad">✗</td></tr>
+          <tr><td class="mono strike">Baublecomponent.gd</td><td class="bad">✗</td></tr>
+          <tr><td class="mono strike">Bauble Component.tscn</td><td class="bad">✗ — spaces are never allowed in filenames or folders</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="subsection" id="constants">
+      <h3>Constants</h3>
+      <p>Any value that appears more than once must be declared as a named constant. Magic numbers — raw numeric or string literals embedded directly in logic — make code harder to read, harder to tune, and impossible to search for project-wide.</p>
+
+<pre><span class="code-lang">GDScript — constants</span><code><span class="cm"># CORRECT — single source of truth</span>
+<span class="kw">const</span> REEL_FORCE: <span class="ty">float</span> = <span class="no">120.0</span>
+
+<span class="kw">func</span> <span class="fn">on_reel_pressed</span>() -> <span class="ty">void</span>:
+    <span class="fn">apply_tension</span>(REEL_FORCE)
+
+<span class="kw">func</span> <span class="fn">on_reel_held</span>() -> <span class="ty">void</span>:
+    <span class="fn">apply_tension</span>(REEL_FORCE)
+
+<span class="cm"># INCORRECT — magic number used twice</span>
+<span class="kw">func</span> <span class="fn">on_reel_pressed</span>() -> <span class="ty">void</span>:
+    <span class="fn">apply_tension</span>(<span class="no">120.0</span>)
+
+<span class="kw">func</span> <span class="fn">on_reel_held</span>() -> <span class="ty">void</span>:
+    <span class="fn">apply_tension</span>(<span class="no">120.0</span>)</code></pre>
+    </div>
+
+    <div class="subsection" id="comments">
+      <h3>Comments &amp; Docstrings</h3>
+      <p>Not every function needs a comment. A well-named function with clearly typed parameters is already self-documenting. Docstrings (using <code>##</code>) are required only on functions where the <em>why</em> or <em>how</em> is not immediately clear from the code alone.</p>
+
+<pre><span class="code-lang">GDScript — comments</span><code><span class="cm"># No docstring needed — the name says it all.</span>
+<span class="kw">func</span> <span class="fn">get_current_lure_weight</span>() -> <span class="ty">float</span>:
+    <span class="kw">return</span> lure_weight
+
+<span class="cm">## Calculates the probability of a bite given depth and current bait.</span>
+<span class="cm">## Returns 0.0 if the active biome does not support the bait type.</span>
+<span class="cm">## Does NOT trigger a bite event — pass the result to attempt_bite().</span>
+<span class="kw">func</span> <span class="fn">calculate_bite_chance</span>(depth: <span class="ty">float</span>, bait_id: <span class="ty">String</span>) -> <span class="ty">float</span>:
+    <span class="kw">pass</span></code></pre>
+
+      <p>Inline comments explain <em>why</em>, not <em>what</em>. If you feel the need to comment on what a line of code does, consider extracting it into a named function instead.</p>
+    </div>
+
+    <div class="subsection" id="typos">
+      <h3>Typo Policy</h3>
+      <p>If you encounter what appears to be a typo in existing code, <strong>do not change it</strong> without confirmation. What looks like a typo may be an intentional legacy name.</p>
+
+      <ol>
+        <li>Raise the suspected typo in <strong>#programming</strong> on Discord. Include the file path and line number.</li>
+        <li>Wait for confirmation from <strong>Drykul</strong>.</li>
+        <li>If confirmed, fix it in your <strong>current PR</strong>. Do not open a separate PR for a typo fix alone.</li>
+      </ol>
+
+      <p>For code you are writing yourself, typos are your responsibility to catch before opening a PR.</p>
+    </div>
+  </section>
+
+  <!-- ══ 07  AUTOLOAD REFERENCE ══ -->
+  <section class="section" id="autoload-reference">
+    <span class="section-tag">Section 07</span>
+    <h2>Autoload Reference</h2>
+
+    <p>Autoloads are globally accessible from any script by their name alone. The following Autoloads are currently established in the project. All of them live in <code>scripts/autoloads/</code>.</p>
+
+    <div class="subsection" id="gameevents">
+      <h3>GameEvents</h3>
+
+      <div class="acard">
+        <div class="acard-head">
+          <span class="acard-name">GameEvents</span>
+          <span class="acard-badge ab-global">Global Singleton</span>
+          <span class="acard-badge ab-alias">Also known as: EventBus</span>
+        </div>
+        <p><code>GameEvents</code> is this project's EventBus — a central signal hub that allows unrelated systems to communicate without needing direct references to each other. It contains <strong>only signal declarations</strong>. No logic, no state, no functions except what signals require.</p>
+        <p><strong>What belongs here:</strong> signals that cross system boundaries — things more than one unrelated system needs to know about. <strong>What does not belong here:</strong> signals that only a single parent cares about. Those stay local on the component or node that owns them.</p>
+        <p><strong>Usage:</strong> See the <a href="#signals-primer">Signals Primer</a> in Section 05 for full examples of how to emit and connect to signals on <code>GameEvents</code>.</p>
+      </div>
+
+      <div class="callout c-warn">
+        <span class="callout-title">Ongoing refactoring — signals migration</span>
+        <p>The codebase is being refactored to centralize all cross-system signals into <code>GameEvents</code>. You may encounter signal declarations scattered across other scripts — this is legacy code being cleaned up, not a pattern to copy. All new cross-system signals must be declared in <code>GameEvents.gd</code>. If you are unsure whether your signal belongs there, ask in <strong>#programming</strong>.</p>
+      </div>
+
+      <h4>Current signals</h4>
+      <table>
+        <thead><tr><th>Signal</th><th>Emitted when</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">on_instance_ready</td><td>The GameEvents node enters the scene tree</td><td>Placeholder</td></tr>
+          <tr><td class="mono">on_player_spawned(player: Player)</td><td>The player is spawned into the world</td><td>Placeholder</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:13px; color:var(--text-muted);">The above signals are currently examples only and do not drive active game logic. This table will be expanded as signals are formally adopted during the refactoring process.</p>
+    </div>
+
+    <div class="subsection" id="gamestate">
+      <h3>GameState</h3>
+      <div class="acard">
+        <div class="acard-head">
+          <span class="acard-name">GameState</span>
+          <span class="acard-badge ab-global">Global Singleton</span>
+        </div>
+        <p>Holds live runtime state — data about what is happening in the current session. This is not save data and not configuration. It is the current snapshot of the game as it is running.</p>
+        <p><strong>Access pattern:</strong> <code>GameState.player.body</code>, <code>GameState.player.money</code>, <code>GameState.containers_open</code></p>
+      </div>
+
+      <h4>Properties</h4>
+      <table>
+        <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">player</td><td class="mono ty">PlayerState</td><td>Inner class holding all live player references and values</td></tr>
+          <tr><td class="mono">player.body</td><td class="mono ty">CharacterBody3D</td><td>Reference to the active player body node</td></tr>
+          <tr><td class="mono">player.location</td><td class="mono ty">Vector3</td><td>Current world position of the player</td></tr>
+          <tr><td class="mono">player.money</td><td class="mono ty">int</td><td>Current currency amount</td></tr>
+          <tr><td class="mono">player.player_animation</td><td class="mono ty">AnimationPlayer</td><td>Reference to the player's AnimationPlayer node</td></tr>
+          <tr><td class="mono">containers_open</td><td class="mono ty">bool</td><td>Whether any inventory container UI is currently open</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="subsection" id="gamedata">
+      <h3>GameData</h3>
+      <div class="acard">
+        <div class="acard-head">
+          <span class="acard-name">GameData</span>
+          <span class="acard-badge ab-global">Global Singleton</span>
+        </div>
+        <p>Holds all tunable numeric and configuration values for the game — player movement speeds, camera behaviour, and other values that affect game feel. This is the single source of truth for anything that a designer might want to adjust. <strong>Do not hardcode values that belong here.</strong></p>
+        <p><strong>Access pattern:</strong> <code>GameData.player_base_speed</code>, <code>GameData.camera_offset</code></p>
+      </div>
+
+      <h4>Properties</h4>
+      <table>
+        <thead><tr><th>Property</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">player_base_speed</td><td class="mono ty">float</td><td class="mono no">5.0</td><td>Maximum horizontal movement speed</td></tr>
+          <tr><td class="mono">player_acceleration</td><td class="mono ty">float</td><td class="mono no">20.0</td><td>Rate at which the player reaches top speed</td></tr>
+          <tr><td class="mono">camera_offset</td><td class="mono ty">Vector3</td><td class="mono no">(0, 3, 10)</td><td>Camera position relative to the player</td></tr>
+          <tr><td class="mono">smooth_speed</td><td class="mono ty">float</td><td class="mono no">5.0</td><td>Camera follow smoothing factor</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout c-info">
+        <span class="callout-title">Adjusting these values without touching code</span>
+        <p>All <code>GameData</code> values can be adjusted in the Godot editor without opening any scripts. See the <a href="#editor-tuning">Editor Tuning Script</a> section below for how this works.</p>
+      </div>
+    </div>
+
+    <div class="subsection" id="inputmanager">
+      <h3>InputManager</h3>
+      <div class="acard">
+        <div class="acard-head">
+          <span class="acard-name">InputManager</span>
+          <span class="acard-badge ab-global">Global Singleton</span>
+        </div>
+        <p>Manages all player input through a context system. Only one input context is active at a time. Switching contexts is done by calling <code>InputManager.set_mode()</code> — never by modifying <code>current_mode</code> directly. Keybinds are loaded from <code>user://controls.cfg</code> automatically on startup.</p>
+      </div>
+
+      <h4>Input modes</h4>
+      <p>Available modes are defined in <code>InputMode</code> — a separate class intentionally, so you write <code>InputMode.Movement</code> rather than <code>InputManager.InputMode.Movement</code>. This is by design.</p>
+
+      <table>
+        <thead><tr><th>Mode</th><th>When used</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">InputMode.Movement</td><td>Player is in the world and can move</td></tr>
+          <tr><td class="mono">InputMode.Menu</td><td>A menu is open</td></tr>
+          <tr><td class="mono">InputMode.Inventory</td><td>The inventory screen is open</td></tr>
+          <tr><td class="mono">InputMode.Settings</td><td>The settings screen is open</td></tr>
+          <tr><td class="mono">InputMode.Disable</td><td>All input is suppressed (cutscenes, loading, etc.)</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Switching modes</h4>
+<pre><span class="code-lang">GDScript — switching input modes</span><code><span class="cm"># Switch to inventory mode when a container is opened</span>
+<span class="fn">InputManager</span>.<span class="fn">set_mode</span>(<span class="ty">InputMode</span>.Inventory)
+
+<span class="cm"># Never do this — always use set_mode()</span>
+<span class="cm"># InputManager.current_mode = InputMode.Inventory  ← WRONG</span></code></pre>
+
+      <h4>Connecting to InputManager signals</h4>
+<pre><span class="code-lang">GDScript — connecting to InputManager signals</span><code><span class="kw">func</span> <span class="fn">_ready</span>() -> <span class="ty">void</span>:
+    <span class="fn">InputManager</span>.escape_pressed.<span class="fn">connect</span>(_on_escape_pressed)
+    <span class="fn">InputManager</span>.interact_pressed.<span class="fn">connect</span>(_on_interact_pressed)
+    <span class="fn">InputManager</span>.inventory_toggle_pressed.<span class="fn">connect</span>(_on_inventory_toggle)
+    <span class="fn">InputManager</span>.mode_change.<span class="fn">connect</span>(_on_mode_changed)
+
+<span class="kw">func</span> <span class="fn">_on_mode_changed</span>(new_mode: <span class="ty">int</span>, previous_mode: <span class="ty">int</span>) -> <span class="ty">void</span>:
+    <span class="kw">pass</span></code></pre>
+
+      <p>For the full <code>InputManager</code> API including all context classes and the keybinding system, see <a href="#inputmanager-api">Section 08 — InputManager API</a>.</p>
+    </div>
+
+    <div class="subsection" id="itemmanager">
+      <h3>ItemManager</h3>
+      <div class="acard">
+        <div class="acard-head">
+          <span class="acard-name">ItemManager</span>
+          <span class="acard-badge ab-global">Global Singleton</span>
+        </div>
+        <p>Manages all inventory interactions at runtime — picking up items, placing items, swapping items between slots, rotating and flipping held items, and updating container previews as the mouse moves. It is the single point of control for anything that happens to an item while a container is open.</p>
+        <p><code>ItemManager</code> operates by querying the scene tree for nodes in the <code>"held_item"</code> and <code>"inventory_container"</code> groups each frame. It only processes input when <code>GameState.containers_open</code> is <code>true</code>.</p>
+        <p><strong>Access pattern:</strong> <code>ItemManager.add_item_to_player_inventory(item)</code></p>
+      </div>
+
+      <h4>Public methods</h4>
+      <table>
+        <thead><tr><th>Method</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">add_item_to_player_inventory(item: ItemData) -> void</td><td>Instantiates an <code>ItemUI</code> from the item data and places it in the player's inventory container at the first free slot. Prints a warning if the inventory is full. This is the standard way to give the player an item from code. See <strong>Creating_New_Items_Guide.docx</strong> on the shared Google Drive for how to create <code>ItemData</code> resource files.</td></tr>
+          <tr><td class="mono">flip_held_item_horizontal() -> void</td><td>Flips the currently held item horizontally. Can be called from external scripts.</td></tr>
+          <tr><td class="mono">flip_held_item_vertical() -> void</td><td>Flips the currently held item vertically. Can be called from external scripts.</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Input actions handled internally</h4>
+      <p>The following input actions are consumed by <code>ItemManager</code> automatically when containers are open. Do not handle these yourself in other scripts while <code>GameState.containers_open</code> is <code>true</code>.</p>
+      <table>
+        <thead><tr><th>Action</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">rotate_right</td><td>Rotates the held item 90° clockwise</td></tr>
+          <tr><td class="mono">rotate_left</td><td>Rotates the held item 90° counter-clockwise</td></tr>
+          <tr><td class="mono">flip</td><td>Flips the held item horizontally</td></tr>
+          <tr><td class="mono">Left click</td><td>Picks up an item under the cursor, or places the held item into the hovered container slot</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Item groups</h4>
+      <p><code>ItemManager</code> uses Godot's node group system to locate items and containers without direct references. Any node participating in the inventory system must be in the correct group:</p>
+      <table>
+        <thead><tr><th>Group name</th><th>Who joins it</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">held_item</td><td>An <code>ItemUI</code> node that is currently being dragged by the player</td></tr>
+          <tr><td class="mono">inventory_container</td><td>Any <code>InventoryContainer</code> node that is open and accepting items</td></tr>
+        </tbody>
+      </table>
+
+<pre><span class="code-lang">GDScript — adding an item to the player's inventory</span><code><span class="cm"># Preload the item's resource file and pass it to ItemManager</span>
+<span class="kw">var</span> apple: <span class="ty">ItemData</span> = <span class="fn">preload</span>(<span class="st">"res://data/ui/resources/items/apple/apple.tres"</span>)
+<span class="fn">ItemManager</span>.<span class="fn">add_item_to_player_inventory</span>(apple)</code></pre>
+
+      <div class="callout c-info">
+        <span class="callout-title">Creating item resource files</span>
+        <p>Creating <code>ItemData</code> <code>.tres</code> resource files and setting up item folders under <code>data/ui/resources/items/</code> is covered in full in <strong>Creating_New_Items_Guide.docx</strong>, available on the shared Google Drive. Always follow that guide when adding new items — do not create item resources without reading it first.</p>
+      </div>
+    </div>
+
+    <div class="subsection" id="debugoverlay">
+      <h3>DebugOverlay</h3>
+      <div class="acard">
+        <div class="acard-head">
+          <span class="acard-name">DebugOverlay</span>
+          <span class="acard-badge ab-global">Global Singleton</span>
+          <span class="acard-badge" style="background:rgba(232,93,117,0.08);color:var(--danger);border:1px solid rgba(232,93,117,0.25);">Dev only — not in final build</span>
+        </div>
+        <p>A developer overlay that displays live runtime information — current FPS, player world position, and active input mode. It is toggled on and off by the <code>toggle_debug_overlay</code> input action, which emits <code>InputManager.debug_toggle_pressed</code>. The overlay is always hidden by default and only visible when explicitly toggled.</p>
+        <p><code>DebugOverlay</code> will not be included in the final release build. It is available to all contributors during development as a useful diagnostic tool. You do not need to remove or modify it.</p>
+        <p><strong>Static access:</strong> <code>DebugOverlay.Instance</code> gives you a direct reference from anywhere without needing <code>get_node()</code>.</p>
+      </div>
+
+      <h4>Properties</h4>
+      <table>
+        <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">Instance</td><td class="mono ty">DebugOverlay</td><td>Static reference to the singleton instance. Use <code>DebugOverlay.Instance</code> for direct access.</td></tr>
+          <tr><td class="mono">debug_on</td><td class="mono ty">bool</td><td>Whether the overlay is currently visible</td></tr>
+          <tr><td class="mono">fps</td><td class="mono ty">String</td><td>Write to set the FPS line. Setter automatically updates the label.</td></tr>
+          <tr><td class="mono">pos</td><td class="mono ty">String</td><td>Write to set the position line.</td></tr>
+          <tr><td class="mono">mode</td><td class="mono ty">String</td><td>Write to set the mode line.</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Signals</h4>
+      <table>
+        <thead><tr><th>Signal</th><th>Emitted when</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">debug_toggled</td><td>The overlay is toggled on or off</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Toggling the overlay</h4>
+      <p>Press the bound key for <code>toggle_debug_overlay</code> at runtime (defaults to a key set in the project InputMap). The overlay appears over all game content and runs on <code>PROCESS_MODE_ALWAYS</code> so it works even when the game is paused.</p>
+    </div>
+
+    <div class="subsection" id="editor-tuning">
+      <h3>Editor Tuning Script</h3>
+      <p>The <strong>Editor Tuning Script</strong> (<code>in_editor_stats_adjustments.gd</code>) is a <code>@tool</code> script attached to a node in the main level scene. It allows non-coders — designers, artists, and anyone else — to adjust tunable game values directly in the Godot Inspector without ever opening a script.</p>
+
+      <p>It works by mirroring all <code>GameData</code> values as <code>@export</code> variables. When a value is changed in the Inspector, a <code>set()</code> function pushes the new value directly into the <code>GameData</code> Autoload at runtime. The change is immediate and does not require reloading the scene.</p>
+
+      <div class="callout c-info">
+        <span class="callout-title">For non-coders — how to tune values</span>
+        <p>Open the main level scene in Godot. Select the node with the Editor Tuning Script attached. In the Inspector panel on the right you will see categories for <strong>Player Movement</strong>, <strong>Camera</strong>, and <strong>Containers</strong>. Adjust values there and press Play to test. No script editing required.</p>
+      </div>
+
+      <h4>For coders — adding new tunable values</h4>
+      <p>When you add a new tunable value to <code>GameData</code>, you must also add a corresponding <code>@export</code> variable to the Editor Tuning Script so non-coders can adjust it. Follow this pattern:</p>
+
+<pre><span class="code-lang">GDScript — adding a new tunable value</span><code><span class="cm"># Step 1: Add the value to GameData.gd</span>
+<span class="kw">var</span> cast_distance_max: <span class="ty">float</span> = <span class="no">50.0</span>
+
+<span class="cm"># Step 2: Mirror it in in_editor_stats_adjustments.gd</span>
+<span class="an">@export_category</span>(<span class="st">"Fishing"</span>)
+<span class="an">@export</span> <span class="kw">var</span> cast_distance_max: <span class="ty">float</span> = <span class="no">50.0</span>:
+    <span class="fn">set</span>(value):
+        cast_distance_max = value
+        <span class="fn">GameData</span>.cast_distance_max = value</code></pre>
+
+      <h4>Inventory container configuration</h4>
+      <p>The Editor Tuning Script also manages inventory container dimensions (rows and columns) for both player and shop inventories. These are exposed under the <strong>Containers</strong> category in the Inspector and emit an <code>inventory_config_changed</code> signal when changed so any listening UI can update itself.</p>
+    </div>
+  </section>
+
+  <!-- ══ 08  SYSTEM REFERENCE ══ -->
+  <section class="section" id="system-reference">
+    <span class="section-tag">Section 08</span>
+    <h2>System Reference</h2>
+
+    <div class="subsection" id="baseentity-api">
+      <h3>BaseEntity API</h3>
+
+      <div class="pending-block">
+        <div class="pending-hd"><div class="p-dot"></div><span class="p-title">⚠ Pending — Base Class Names &amp; Full API</span></div>
+        <p>The actual names of established base classes, their full lifecycle hook signatures, and their complete signal lists are pending finalization with <strong>Drykul</strong>. The term <code>BaseEntity</code> used throughout this document is a placeholder name for illustration. This section will be updated with real class names and complete API documentation as they are formally established. Check <strong>#programming</strong> for current guidance.</p>
+      </div>
+
+      <h4>What to expect once finalized</h4>
+      <p>Every base class will document: its <code>class_name</code>, which node type it extends, all lifecycle hooks you can override, all signals it emits, and any public methods it exposes. The pattern established in Section 05 — <code>_entity_ready()</code>, <code>_entity_die()</code>, <code>die()</code> — reflects the intended structure.</p>
+    </div>
+
+    <div class="subsection" id="component-api">
+      <h3>Component Interface</h3>
+      <p>Components do not share a common base class beyond <code>Node</code>. Instead they follow the structural pattern defined in the <a href="#component-template">Component Template</a> in Section 05, enforced through code review. Every component must expose:</p>
+      <ul>
+        <li>One or more <code>@export</code> variables for per-entity configuration in the editor</li>
+        <li>Signals for all state changes that anything outside the component might care about</li>
+        <li>A clear distinction between public methods (<code>snake_case</code>) and private methods (<code>_snake_case</code>)</li>
+        <li>The five section headers from the template — <code>EXPORTS</code>, <code>STATE</code>, <code>SIGNALS</code>, <code>LIFECYCLE</code>, <code>PUBLIC INTERFACE</code>, <code>PRIVATE</code></li>
+      </ul>
+    </div>
+
+    <div class="subsection" id="inputmanager-api">
+      <h3>InputManager API</h3>
+      <p>Full reference for the InputManager system. For usage guidance and code examples see <a href="#inputmanager">Section 07 — InputManager</a>.</p>
+
+      <h4>Properties</h4>
+      <table>
+        <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">current_mode</td><td class="mono ty">int</td><td>The currently active input mode. Read this to check state — never assign it directly. Always use <code>set_mode()</code>.</td></tr>
+          <tr><td class="mono">saved_mode</td><td class="mono ty">int</td><td>Stores the previous input mode before a context switch so it can be restored later. Set this before calling <code>set_mode()</code> when you need to return to the prior mode. See the saved mode pattern below.</td></tr>
+          <tr><td class="mono">movement</td><td class="mono ty">MovementInputContext</td><td>The active movement context. Read <code>movement.move_direction</code> for the current input vector.</td></tr>
+          <tr><td class="mono">menu</td><td class="mono ty">MenuInputContext</td><td>The active menu context.</td></tr>
+          <tr><td class="mono">inventory</td><td class="mono ty">InventoryInputContext</td><td>The active inventory context.</td></tr>
+          <tr><td class="mono">settings</td><td class="mono ty">SettingsInputContext</td><td>The active settings context.</td></tr>
+          <tr><td class="mono">player_camera</td><td class="mono ty">PlayerCamera</td><td>Reference to the active player camera. Set automatically by InputManager.</td></tr>
+          <tr><td class="mono">controls_type</td><td class="mono ty">ControlsMethod</td><td>Tracks whether the player is using keyboard/mouse or gamepad. <span style="color:var(--pending)">⚠ Auto-detection behaviour pending finalization.</span> Do not write logic that depends on this value until it is finalized.</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Methods</h4>
+      <table>
+        <thead><tr><th>Method</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">set_mode(mode: int) -> void</td><td>Switches the active input context. Calls <code>on_exit()</code> on the outgoing context and <code>on_enter()</code> on the incoming one, then emits <code>mode_change</code>. Always use this — never assign <code>current_mode</code> directly.</td></tr>
+          <tr><td class="mono">remap_keys() -> void</td><td><strong>Internal.</strong> Loads and applies keybinds from <code>user://controls.cfg</code>. Called automatically on startup. Do not call this from contributor code.</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Signals</h4>
+      <table>
+        <thead><tr><th>Signal</th><th>Parameters</th><th>Emitted when</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">mode_change</td><td class="mono">new_mode: int, previous_mode: int</td><td>The active input mode changes via <code>set_mode()</code></td></tr>
+          <tr><td class="mono">escape_pressed</td><td>—</td><td>The pause action is triggered</td></tr>
+          <tr><td class="mono">interact_pressed</td><td>—</td><td>The interact action is triggered while in Movement mode</td></tr>
+          <tr><td class="mono">inventory_toggle_pressed</td><td>—</td><td>The inventory toggle action is triggered</td></tr>
+          <tr><td class="mono">debug_toggle_pressed</td><td>—</td><td>The debug overlay toggle action is triggered</td></tr>
+        </tbody>
+      </table>
+
+      <h4>The saved mode pattern</h4>
+      <p>When switching to a temporary mode (inventory, settings) from which you need to return to wherever the player was before, store the current mode in <code>saved_mode</code> first, then restore it on exit. This is the established pattern used throughout the project.</p>
+
+<pre><span class="code-lang">GDScript — saved mode pattern</span><code><span class="cm"># Opening a temporary mode — save current mode first</span>
+<span class="kw">if</span> <span class="fn">InputManager</span>.current_mode != <span class="ty">InputMode</span>.Inventory:
+    <span class="fn">InputManager</span>.saved_mode = <span class="fn">InputManager</span>.current_mode
+<span class="fn">InputManager</span>.<span class="fn">set_mode</span>(<span class="ty">InputMode</span>.Inventory)
+
+<span class="cm"># Closing that mode — restore saved mode</span>
+<span class="fn">InputManager</span>.<span class="fn">set_mode</span>(<span class="fn">InputManager</span>.saved_mode)</code></pre>
+
+      <h4>InputMode</h4>
+      <p><code>InputMode</code> is a separate class from <code>InputManager</code> — intentionally, so you write <code>InputMode.Movement</code> rather than <code>InputManager.InputMode.Movement</code>. Use <code>InputMode.return_name(int)</code> to get a human-readable string for any mode value, which is useful for debugging.</p>
+
+      <table>
+        <thead><tr><th>Enum value</th><th>Int</th><th>When active</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">InputMode.Movement</td><td class="mono no">0</td><td>Player is in the world and can move freely</td></tr>
+          <tr><td class="mono">InputMode.Menu</td><td class="mono no">1</td><td>A menu is open</td></tr>
+          <tr><td class="mono">InputMode.Disable</td><td class="mono no">2</td><td>All input is suppressed — cutscenes, loading, etc.</td></tr>
+          <tr><td class="mono">InputMode.Settings</td><td class="mono no">3</td><td>The settings screen is open</td></tr>
+          <tr><td class="mono">InputMode.Inventory</td><td class="mono no">4</td><td>The inventory screen is open</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Input context classes</h4>
+      <p>Each input mode has a corresponding context class that extends <code>IInputContext</code>. These are managed internally by InputManager — you do not instantiate them directly. The interface they implement is:</p>
+
+      <table>
+        <thead><tr><th>Method</th><th>Called when</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">process() -> void</td><td>Every frame while this context is active</td></tr>
+          <tr><td class="mono">on_enter() -> void</td><td>This context becomes the active context</td></tr>
+          <tr><td class="mono">on_exit() -> void</td><td>This context is replaced by another context</td></tr>
+        </tbody>
+      </table>
+
+      <p>The one context with a public-facing method contributors may use is <code>MovementInputContext</code>:</p>
+
+      <table>
+        <thead><tr><th>Property / Method</th><th>Type</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">move_direction</td><td class="mono ty">Vector2</td><td>Current directional input vector. Read via <code>InputManager.movement.move_direction</code>.</td></tr>
+          <tr><td class="mono">interact_pressed</td><td class="mono ty">bool</td><td>Whether interact was pressed this frame.</td></tr>
+          <tr><td class="mono">consume_interact() -> void</td><td>—</td><td>Clears <code>interact_pressed</code> after it has been handled, preventing double-processing.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══ 09  CHECKLIST ══ -->
+  <section class="section" id="checklist">
+    <span class="section-tag">Section 09</span>
+    <h2>PR Contribution Checklist</h2>
+    <p>Verify every item before opening a pull request. PRs that fail basic checklist items will be returned without a full review.</p>
+
+    <h3>Code Quality</h3>
+    <ul class="checklist">
+      <li><input type="checkbox"><span class="cl-label">All variables, functions, signals, and classes follow the naming conventions in Section 06</span></li>
+      <li><input type="checkbox"><span class="cl-label">All function parameters and return types are explicitly typed</span></li>
+      <li><input type="checkbox"><span class="cl-label">No magic numbers — any value used more than once is declared as a named constant</span></li>
+      <li><input type="checkbox"><span class="cl-label">Complex or non-obvious functions have <code>##</code> docstrings</span></li>
+      <li><input type="checkbox"><span class="cl-label">No debug code left in — no stray <code>print()</code>, breakpoints, or commented-out blocks</span></li>
+    </ul>
+
+    <h3>Architecture</h3>
+    <ul class="checklist">
+      <li><input type="checkbox"><span class="cl-label">No new Autoloads created without prior explicit approval from Drykul</span></li>
+      <li><input type="checkbox"><span class="cl-label">No component calls <code>get_parent()</code> to reach and invoke methods on its owning entity</span></li>
+      <li><input type="checkbox"><span class="cl-label">Cross-system signals are declared in <code>GameEvents.gd</code>, not scattered across scripts</span></li>
+      <li><input type="checkbox"><span class="cl-label">Input mode changes use <code>InputManager.set_mode()</code> — not direct assignment to <code>current_mode</code></span></li>
+      <li><input type="checkbox"><span class="cl-label">Any new base class is placed in <code>scripts/base/</code> and flagged to Drykul in #programming</span></li>
+      <li><input type="checkbox"><span class="cl-label">No existing base class was modified without permission from its original author or Drykul</span></li>
+      <li><input type="checkbox"><span class="cl-label">All scripts are in the correct location per the Co-location Rule in Section 04</span></li>
+    </ul>
+
+    <h3>Files &amp; Git</h3>
+    <ul class="checklist">
+      <li><input type="checkbox"><span class="cl-label">Branch name follows the <code>Feature-CODE-description</code> convention</span></li>
+      <li><input type="checkbox"><span class="cl-label">Branch was created from <code>code</code> and the PR targets <code>code</code> — not <code>dev</code></span></li>
+      <li><input type="checkbox"><span class="cl-label">WIP commits have been squashed into meaningful commit messages before the PR was opened</span></li>
+      <li><input type="checkbox"><span class="cl-label">No files were added to <code>assets/art/item_shape_previews/</code> — that folder is restricted to the inventory extension only</span></li>
+      <li><input type="checkbox"><span class="cl-label">All <code>.tscn</code> and <code>.gd</code> files use PascalCase filenames</span></li>
+      <li><input type="checkbox"><span class="cl-label">No folder or file names contain spaces</span></li>
+    </ul>
+
+    <h3>Typos</h3>
+    <ul class="checklist">
+      <li><input type="checkbox"><span class="cl-label">No new typos introduced in variable names, function names, signals, or comments</span></li>
+      <li><input type="checkbox"><span class="cl-label">Any suspected typos in existing code were confirmed via <strong>#programming</strong> before being changed</span></li>
+    </ul>
+
+  </section>
+
+  <!-- ══ TL;DR ══ -->
+  <section class="section" id="tldr">
+    <span class="section-tag">Quick Reference</span>
+    <h2>TL;DR</h2>
+    <p>The most important rules at a glance. Click any keyword to jump to the full explanation.</p>
+
+    <h3>Git &amp; GitHub</h3>
+    <ul>
+      <li><strong>Branch naming:</strong> always <code>Feature-CODE-your-description</code>. No exceptions. (<a href="#branches">full rule</a>)</li>
+      <li><strong>Branch from:</strong> <code>code</code>. <strong>PR target:</strong> <code>code</code>. Never <code>dev</code>. (<a href="#full-flow">full rule</a>)</li>
+      <li><strong>Issues:</strong> Drykul assigns you via Discord, or you self-assign any unassigned issue filtered by the Code label. (<a href="#picking-issues">full rule</a>)</li>
+      <li><strong>Commit messages:</strong> freeform but must be meaningful. Squash WIP commits before opening a PR. (<a href="#commits">full rule</a>)</li>
+      <li><strong>Merging:</strong> Drykul merges every PR. Never merge your own. Drykul deletes your branch after merge. (<a href="#code-review">full rule</a>)</li>
+      <li><strong>PR description:</strong> a short plain-language summary of what the PR does is always required. Referencing the GitHub issue number is optional. (<a href="#pull-requests">full rule</a>)</li>
+      <li><strong>Notify Drykul:</strong> via <strong>#programming</strong> or DM on Discord when your PR is ready — not via GitHub. (<a href="#pull-requests">full rule</a>)</li>
+    </ul>
+
+    <h3>Project Structure</h3>
+    <ul>
+      <li><strong>Co-location rule:</strong> if a <code>.gd</code> script belongs to exactly one scene, it lives in the same folder as that <code>.tscn</code>. If it serves more than one scene or has no scene, it belongs in <code>scripts/</code>. (<a href="#colocation">full rule</a>)</li>
+      <li><strong>File naming:</strong> <code>PascalCase</code> for all <code>.gd</code> and <code>.tscn</code> files. Lowercase for all folder names. No spaces anywhere. (<a href="#file-naming">full rule</a>)</li>
+      <li><strong>Restricted folder:</strong> <code>assets/art/item_shape_previews/</code> is for the inventory extension only — do not add files there. (<a href="#off-limits">full rule</a>)</li>
+    </ul>
+
+    <h3>Architecture</h3>
+    <ul>
+      <li><strong>Three layers:</strong> Autoloads (global) → Base Classes (inherited) → Components (child scenes). Know which layer your work belongs to before writing. (<a href="#arch-overview">full rule</a>)</li>
+      <li><strong>New Autoloads:</strong> never create one without Drykul's explicit approval. (<a href="#layer1">full rule</a>)</li>
+      <li><strong>New base classes:</strong> allowed — place in <code>scripts/base/</code> and tell Drykul. Modifying existing base classes requires permission from the original author or Drykul. (<a href="#layer2">full rule</a>)</li>
+      <li><strong>Components:</strong> never call <code>get_parent()</code> to reach the owning entity. Communicate outward through signals only. (<a href="#layer3">full rule</a>)</li>
+      <li><strong>Signals:</strong> if only one parent cares → local signal on the component. If two or more unrelated systems care → it belongs on <code>GameEvents</code>. (<a href="#signals-primer">full rule</a>)</li>
+      <li><strong>Input mode switching:</strong> always use <code>InputManager.set_mode(InputMode.X)</code>. Never assign <code>current_mode</code> directly. (<a href="#inputmanager">full rule</a>)</li>
+    </ul>
+
+    <h3>Coding Standards</h3>
+    <ul>
+      <li><strong>Naming:</strong> <code>snake_case</code> for variables, functions, signals. <code>PascalCase</code> for classes, nodes, enums. <code>SCREAMING_SNAKE_CASE</code> for constants and enum values. All functions must have typed parameters and return types. (<a href="#naming">full rule</a>)</li>
+      <li><strong>Constants:</strong> any value used more than once must be a named constant. No magic numbers. (<a href="#constants">full rule</a>)</li>
+      <li><strong>Docstrings:</strong> required only on complex or non-obvious functions. Use <code>##</code> directly above the function signature. (<a href="#comments">full rule</a>)</li>
+      <li><strong>Typos:</strong> never change a suspected typo without confirming with Drykul in <strong>#programming</strong> first. If confirmed, fix it in the same PR. (<a href="#typos">full rule</a>)</li>
+    </ul>
+
+    <h3>Key Autoloads at a Glance</h3>
+    <ul>
+      <li><code>GameEvents</code> — the signal bus. Emit and connect cross-system signals here. (<a href="#gameevents">full reference</a>)</li>
+      <li><code>GameState</code> — live runtime state. Player body reference, location, money, UI flags. (<a href="#gamestate">full reference</a>)</li>
+      <li><code>GameData</code> — tunable values. Speeds, camera, and other game-feel numbers. (<a href="#gamedata">full reference</a>)</li>
+      <li><code>InputManager</code> — input context system. Use <code>set_mode()</code> to switch modes. (<a href="#inputmanager">full reference</a>)</li>
+      <li><code>ItemManager</code> — inventory item interactions. Use <code>add_item_to_player_inventory()</code> to give the player an item. (<a href="#itemmanager">full reference</a>)</li>
+      <li><code>DebugOverlay</code> — dev-only runtime overlay. Toggle with the <code>toggle_debug_overlay</code> action. Not in the final build. (<a href="#debugoverlay">full reference</a>)</li>
+    </ul>
+
+    <div class="callout c-info">
+      <span class="callout-title">Still not sure?</span>
+      <p>Ask in <strong>#programming</strong> on Discord. When in doubt, ask before writing — it is always faster to clarify upfront than to rewrite after review.</p>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>
